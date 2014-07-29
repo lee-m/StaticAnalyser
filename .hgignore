@@ -1,0 +1,7 @@
+syntax: glob
+StaticAnalyser.Analyser/bin/*
+StaticAnalyser.Analyser/obj/*
+*.user
+StaticAnalyser/bin/*
+StaticAnalyser/obj/*
+*.suo
