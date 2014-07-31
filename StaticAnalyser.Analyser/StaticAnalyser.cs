@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.CommandLine;
+using StaticAnalysis.Analysis;
 
 using System.IO;
 using System.Linq;
@@ -26,6 +27,19 @@ namespace StaticAnalysis
     private TextWriter mDiagnosticsWriter;
 
     /// <summary>
+    /// Collection of rules to run.
+    /// </summary>
+    private AnalysisRuleCollection mRules;
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public StaticAnalyser()
+    {
+      mRules = new AnalysisRuleCollection();
+    }
+
+    /// <summary>
     /// Runs the analysis using the specified command line options.
     /// </summary>
     /// <param name="args">Command line arguments.</param>
@@ -33,26 +47,28 @@ namespace StaticAnalysis
     public void RunAnalysis(string[] args,
                             TextWriter outputWriter)
     {
+      
       mDiagnosticsWriter = outputWriter;
       mOptions = StaticAnalysis.CommandLine.CommandLineParser.ParseOptions(args, outputWriter);
 
       if (mOptions == null)
         return;
 
-      //var workspace = MSBuildWorkspace.Create();
-      //var solution = workspace.OpenSolutionAsync(mOptions.SolutionFile).Result;
+      //Load the solution and then iterate over each project and source file to run
+      //the analysis rules on.
+      var workspace = MSBuildWorkspace.Create();
+      var solution = workspace.OpenSolutionAsync(mOptions.SolutionFile).Result;
 
-      //foreach (var project in solution.Projects)
-      //{
-      //  VisualBasicCompilation compilation = (VisualBasicCompilation)project.GetCompilationAsync().Result;
+      foreach (var project in solution.Projects)
+      {
+        VisualBasicCompilation compilation = (VisualBasicCompilation)project.GetCompilationAsync().Result;
 
-      //  foreach (var tree in compilation.SyntaxTrees)
-      //  {
-      //    CompilationUnitSyntax root = (CompilationUnitSyntax)tree.GetRoot();
-      //    var types = root.DescendantNodes().OfType<TypeStatementSyntax>().ToList();
-      //    int a = 1;
-      //  }
-      //}
+        foreach (var tree in compilation.SyntaxTrees)
+        {
+          CompilationUnitSyntax root = (CompilationUnitSyntax)tree.GetRoot();
+          mRules.ExecuteRules(root, new AnalysisContext(mOptions, mDiagnosticsWriter, project));
+        }
+      }
     }
   }
 }

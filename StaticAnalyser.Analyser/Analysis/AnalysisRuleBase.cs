@@ -23,9 +23,8 @@ namespace StaticAnalysis.Analysis
     /// Initialises a new rule instance.
     /// </summary>
     /// <param name="context">Contextual information to use during the analysis.</param>
-    public AnalysisRuleBase(AnalysisContext context)
+    public AnalysisRuleBase()
     {
-      mContext = context;
       mSyntaxWalker = CreateSyntaxWalker();
     }
 
@@ -33,8 +32,10 @@ namespace StaticAnalysis.Analysis
     /// Executes this rule on a single compilation unit.
     /// </summary>
     /// <param name="compilationUnit">The compilation unit to analyse.</param>
-    public void ExecuteRule(CompilationUnitSyntax compilationUnit)
+    public void ExecuteRule(CompilationUnitSyntax compilationUnit, 
+                            AnalysisContext context)
     {
+      mContext = context;
       mSyntaxWalker.Visit(compilationUnit);
     }
 

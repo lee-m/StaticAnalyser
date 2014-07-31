@@ -40,14 +40,6 @@ namespace StaticAnalysis.Analysis
     }
 
     /// <summary>
-    /// Initialises a new rule instance.
-    /// </summary>
-    /// <param name="context">Contextual information to use during the analysis.</param>
-    public MethodStatementAnalysisRule(AnalysisContext context)
-      : base(context)
-    { }
-
-    /// <summary>
     /// Factory method to create a syntax walker specific to this type of rule
     /// </summary>
     /// <returns></returns>

@@ -1,5 +1,8 @@
-﻿using Microsoft.CodeAnalysis.MSBuild;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.MSBuild;
+
 using StaticAnalysis.CommandLine;
+
 using System.IO;
 
 namespace StaticAnalysis.Analysis
@@ -20,15 +23,23 @@ namespace StaticAnalysis.Analysis
     private readonly TextWriter mAnalysisOutputWriter;
 
     /// <summary>
+    /// The project being analysed.
+    /// </summary>
+    private readonly Project mProject;
+
+    /// <summary>
     /// Initialise a new context instance.
     /// </summary>
     /// <param name="options">Parsed command line options for the program.</param>
     /// <param name="analysisOutputWriter">Output writer to report any diagnostics.</param>
+    /// <param name="project">The project being analysed.</param>
     public AnalysisContext(CommandLineOptions options,
-                           TextWriter analysisOutputWriter)
+                           TextWriter analysisOutputWriter,
+                           Project project)
     {
       mOptions = options;
       mAnalysisOutputWriter = analysisOutputWriter;
+      mProject = project;
     }
 
     /// <summary>

@@ -5,3 +5,5 @@ StaticAnalyser.Analyser/obj/*
 StaticAnalyser/bin/*
 StaticAnalyser/obj/*
 *.suo
+Rules/EmptyCatchBlockRule/bin/*
+Rules/EmptyCatchBlockRule/obj/*
