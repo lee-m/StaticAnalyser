@@ -33,7 +33,7 @@ namespace StaticAnalysis.Analysis
       /// Invokes the bound rule for a method statement.
       /// </summary>
       /// <param name="node">The method to analyse.</param>
-      public override void VisitMethodStatement(MethodStatementSyntax node)
+      public override void VisitMethodBlock(MethodBlockSyntax node)
       {
         mRule.AnalyseMethodStatement(node);
       }
@@ -52,6 +52,6 @@ namespace StaticAnalysis.Analysis
     /// Analyses a method statement.
     /// </summary>
     /// <param name="node">The method to analyse.</param>
-    public abstract void AnalyseMethodStatement(MethodStatementSyntax methodStatement);
+    public abstract void AnalyseMethodStatement(MethodBlockSyntax methodStatement);
   }
 }
