@@ -7,3 +7,4 @@ StaticAnalyser/obj/*
 *.suo
 Rules/EmptyCatchBlockRule/bin/*
 Rules/EmptyCatchBlockRule/obj/*
+TestApp/TestApp/obj/*
