@@ -14,11 +14,12 @@ namespace StaticAnalysis.Rules.EmptyCatchBlockRule
   {
     public override void AnalyseMethodStatement(MethodBlockSyntax methodStatement)
     {
-      var catchBlocks = methodStatement.DescendantNodes().OfType<CatchStatementSyntax>();
+      var catchBlocks = methodStatement.DescendantNodes().OfType<CatchPartSyntax>();
 
       foreach (var catchBlock in catchBlocks)
       {
-        //TODO:
+        if (!catchBlock.Statements.Any())
+          ReportDiagnostic(catchBlock.GetLocation(), "Remove empty catch block.");
       }
     }
   }

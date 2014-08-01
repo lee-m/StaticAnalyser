@@ -40,6 +40,21 @@ namespace StaticAnalysis.Analysis
     }
 
     /// <summary>
+    /// Outputs a diagnostic messge.
+    /// </summary>
+    /// <param name="loc">Location of the code which triggered the message.</param>
+    /// <param name="message">The message to output.</param>
+    protected void ReportDiagnostic(Location loc, string message)
+    {
+      //Line numbers are 0 based in roslyn so need to increment it by one to 
+      //get the line number the user expects
+      mContext.AnalysisOutputWriter.WriteLine("{0}:{1} - {2}", 
+                                              loc.FilePath, 
+                                              loc.GetLineSpan().StartLinePosition.Line + 1,
+                                              message);
+    }
+
+    /// <summary>
     /// Factory method to create a syntax walker specific to this type of rule
     /// </summary>
     /// <returns></returns>
