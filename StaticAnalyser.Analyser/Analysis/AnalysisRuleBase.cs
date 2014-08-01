@@ -46,12 +46,15 @@ namespace StaticAnalysis.Analysis
     /// <param name="message">The message to output.</param>
     protected void ReportDiagnostic(Location loc, string message)
     {
-      //Line numbers are 0 based in roslyn so need to increment it by one to 
-      //get the line number the user expects
-      mContext.AnalysisOutputWriter.WriteLine("{0}:{1} - {2}", 
-                                              loc.FilePath, 
-                                              loc.GetLineSpan().StartLinePosition.Line + 1,
-                                              message);
+      lock (mContext.AnalysisOutputWriter)
+      {
+        //Line numbers are 0 based in roslyn so need to increment it by one to 
+        //get the line number the user expects
+        mContext.AnalysisOutputWriter.WriteLine("{0}:{1} - {2}",
+                                                loc.FilePath,
+                                                loc.GetLineSpan().StartLinePosition.Line + 1,
+                                                message);
+      }
     }
 
     /// <summary>

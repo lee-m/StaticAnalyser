@@ -15,7 +15,7 @@ namespace StaticAnalysis
     private static void Main(string[] args)
     {
       StaticAnalyser analyser = new StaticAnalyser();
-      analyser.RunAnalysis(args, Console.Out);
+      analyser.RunAnalysisAsync(args, Console.Out).Wait();
     }
   }
 }

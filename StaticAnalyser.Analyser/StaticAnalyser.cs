@@ -3,12 +3,13 @@ using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
-using StaticAnalysis.CommandLine;
 using StaticAnalysis.Analysis;
+using StaticAnalysis.CommandLine;
 
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace StaticAnalysis
 {
@@ -45,8 +46,7 @@ namespace StaticAnalysis
     /// </summary>
     /// <param name="args">Command line arguments.</param>
     /// <param name="outputWriter">Output writer to record any diagnosics</param>
-    public void RunAnalysis(string[] args,
-                            TextWriter outputWriter)
+    public async Task RunAnalysisAsync(string[] args, TextWriter outputWriter)
     {
       
       mDiagnosticsWriter = outputWriter;
@@ -57,24 +57,28 @@ namespace StaticAnalysis
 
       Stopwatch analysisTimer = Stopwatch.StartNew();
 
-      //Load the solution and then iterate over each project and source file to run
-      //the analysis rules on.
       var workspace = MSBuildWorkspace.Create();
       var solution = workspace.OpenSolutionAsync(mOptions.SolutionFile).Result;
-
-      foreach (var project in solution.Projects)
-      {
-        VisualBasicCompilation compilation = (VisualBasicCompilation)project.GetCompilationAsync().Result;
-
-        foreach (var tree in compilation.SyntaxTrees)
-        {
-          CompilationUnitSyntax root = (CompilationUnitSyntax)tree.GetRoot();
-          mRules.ExecuteRules(root, new AnalysisContext(mOptions, mDiagnosticsWriter, project));
-        }
-      }
+      await Task.WhenAll(solution.Projects.Select(proj => AnalyseProjectAsync(proj)));
 
       analysisTimer.Stop();
       mDiagnosticsWriter.WriteLine("Analysis completed in {0}", analysisTimer.Elapsed.ToString());
+    }
+
+    /// <summary>
+    /// Asynchronously analyses a single project.
+    /// </summary>
+    /// <param name="project">The project to analyse.</param>
+    /// <returns></returns>
+    private async Task AnalyseProjectAsync(Project project)
+    {
+      VisualBasicCompilation compilation = (VisualBasicCompilation) await project.GetCompilationAsync();
+
+      foreach (var tree in compilation.SyntaxTrees)
+      {
+        CompilationUnitSyntax root = (CompilationUnitSyntax) await tree.GetRootAsync();
+        mRules.ExecuteRules(root, new AnalysisContext(mOptions, mDiagnosticsWriter, project));
+      }
     }
   }
 }
