@@ -10,11 +10,11 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 namespace StaticAnalysis.Rules.EmptyCatchBlockRule
 {
   [Export(typeof(AnalysisRuleBase))]
-  public class EmptyCatchBlockRule : MethodStatementAnalysisRule
+  public class EmptyCatchBlockRule : MethodBlockAnalysisRule
   {
-    public override void AnalyseMethodStatement(MethodBlockSyntax methodStatement)
+    public override void AnalyseMethod(MethodBlockSyntax methodBlock)
     {
-      var catchBlocks = methodStatement.DescendantNodes().OfType<CatchPartSyntax>();
+      var catchBlocks = methodBlock.DescendantNodes().OfType<CatchPartSyntax>();
 
       foreach (var catchBlock in catchBlocks)
       {

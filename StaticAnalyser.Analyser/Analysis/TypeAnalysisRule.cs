@@ -7,7 +7,7 @@ namespace StaticAnalysis.Analysis
   /// <summary>
   /// Analysis rule which operates on class/structure declarations.
   /// </summary>
-  public abstract class TypeStatementAnalysisRule : AnalysisRuleBase
+  public abstract class TypeAnalysisRule : AnalysisRuleBase
   {
     /// <summary>
     /// Syntax walker which only visits type statements.
@@ -17,9 +17,9 @@ namespace StaticAnalysis.Analysis
       /// <summary>
       /// The analysis rule to invoke for each type statement.
       /// </summary>
-      private TypeStatementAnalysisRule mRule;
+      private TypeAnalysisRule mRule;
 
-      public TypeStatementSyntaxWalker(TypeStatementAnalysisRule rule)
+      public TypeStatementSyntaxWalker(TypeAnalysisRule rule)
         : base(SyntaxWalkerDepth.Node)
       {
         mRule = rule;

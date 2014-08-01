@@ -7,23 +7,23 @@ namespace StaticAnalysis.Analysis
   /// <summary>
   /// Analysis rule which operates on method declarations.
   /// </summary>
-  public abstract class MethodStatementAnalysisRule : AnalysisRuleBase
+  public abstract class MethodBlockAnalysisRule : AnalysisRuleBase
   {
     /// <summary>
-    /// Syntax walker which only visits method statements.
+    /// Syntax walker which only visits method blocks.
     /// </summary>
-    private class MethodStatementSyntaxWalker : VisualBasicSyntaxWalker
+    private class MethodBlockSyntaxWalker : VisualBasicSyntaxWalker
     {
       /// <summary>
       /// The analysis rule to invoke for each method statement.
       /// </summary>
-      private MethodStatementAnalysisRule mRule;
+      private MethodBlockAnalysisRule mRule;
 
       /// <summary>
       /// Initialise a new instance bound to the specified rule.
       /// </summary>
       /// <param name="rule">The rule to invoke for each method found.</param>
-      public MethodStatementSyntaxWalker(MethodStatementAnalysisRule rule)
+      public MethodBlockSyntaxWalker(MethodBlockAnalysisRule rule)
         : base(SyntaxWalkerDepth.Node)
       {
         mRule = rule;
@@ -35,7 +35,7 @@ namespace StaticAnalysis.Analysis
       /// <param name="node">The method to analyse.</param>
       public override void VisitMethodBlock(MethodBlockSyntax node)
       {
-        mRule.AnalyseMethodStatement(node);
+        mRule.AnalyseMethod(node);
       }
     }
 
@@ -45,13 +45,13 @@ namespace StaticAnalysis.Analysis
     /// <returns></returns>
     protected override VisualBasicSyntaxWalker CreateSyntaxWalker()
     {
-      return new MethodStatementSyntaxWalker(this);
+      return new MethodBlockSyntaxWalker(this);
     }
 
     /// <summary>
     /// Analyses a method statement.
     /// </summary>
     /// <param name="node">The method to analyse.</param>
-    public abstract void AnalyseMethodStatement(MethodBlockSyntax methodStatement);
+    public abstract void AnalyseMethod(MethodBlockSyntax methodBlock);
   }
 }
