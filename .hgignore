@@ -8,3 +8,5 @@ StaticAnalyser/obj/*
 Rules/EmptyCatchBlockRule/bin/*
 Rules/EmptyCatchBlockRule/obj/*
 TestApp/TestApp/obj/*
+Rules/EmptyFinaliserRule/bin/*
+Rules/EmptyFinaliserRule/obj/*
