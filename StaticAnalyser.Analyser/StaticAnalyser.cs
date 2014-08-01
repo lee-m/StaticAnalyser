@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using StaticAnalysis.CommandLine;
 using StaticAnalysis.Analysis;
 
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -54,6 +55,8 @@ namespace StaticAnalysis
       if (mOptions == null)
         return;
 
+      Stopwatch analysisTimer = Stopwatch.StartNew();
+
       //Load the solution and then iterate over each project and source file to run
       //the analysis rules on.
       var workspace = MSBuildWorkspace.Create();
@@ -69,6 +72,9 @@ namespace StaticAnalysis
           mRules.ExecuteRules(root, new AnalysisContext(mOptions, mDiagnosticsWriter, project));
         }
       }
+
+      analysisTimer.Stop();
+      mDiagnosticsWriter.WriteLine("Analysis completed in {0}", analysisTimer.Elapsed.ToString());
     }
   }
 }
