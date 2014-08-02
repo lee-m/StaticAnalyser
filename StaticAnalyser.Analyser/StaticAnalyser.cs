@@ -48,7 +48,6 @@ namespace StaticAnalysis
     /// <param name="outputWriter">Output writer to record any diagnosics</param>
     public async Task RunAnalysisAsync(string[] args, TextWriter outputWriter)
     {
-      
       mDiagnosticsWriter = outputWriter;
       mOptions = StaticAnalysis.CommandLine.CommandLineParser.ParseOptions(args, outputWriter);
 
@@ -73,14 +72,7 @@ namespace StaticAnalysis
     private async Task AnalyseProjectAsync(Project project)
     {
       VisualBasicCompilation compilation = (VisualBasicCompilation) await project.GetCompilationAsync();
-
-      foreach (var tree in compilation.SyntaxTrees)
-      {
-        CompilationUnitSyntax root = (CompilationUnitSyntax) await tree.GetRootAsync();
-        SemanticModel model = compilation.GetSemanticModel(tree);
-
-        mRules.ExecuteRules(root, new AnalysisContext(mOptions, mDiagnosticsWriter, model));
-      }
+      await mRules.ExecuteRulesAsync(new AnalysisContext(mOptions, mDiagnosticsWriter, compilation));
     }
   }
 }

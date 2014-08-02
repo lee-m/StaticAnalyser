@@ -1,6 +1,10 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Linq;
+
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+
+using StaticAnalysis.Analysis.Utils;
 
 namespace StaticAnalysis.Analysis
 {
@@ -12,18 +16,11 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Syntax walker which only visits type statements.
     /// </summary>
-    private class TypeStatementSyntaxWalker : VisualBasicSyntaxWalker
+    private class TypeStatementSyntaxWalker : TypedAnalysisSyntaxWalker<TypeAnalysisRule>
     {
-      /// <summary>
-      /// The analysis rule to invoke for each type statement.
-      /// </summary>
-      private TypeAnalysisRule mRule;
-
-      public TypeStatementSyntaxWalker(TypeAnalysisRule rule)
-        : base(SyntaxWalkerDepth.Node)
-      {
-        mRule = rule;
-      }
+      public TypeStatementSyntaxWalker(TypeAnalysisRule rule, AnalysisContext context)
+        : base(rule, context)
+      { }
 
       /// <summary>
       /// Invokes the bound rule for a class declaration.
@@ -31,9 +28,7 @@ namespace StaticAnalysis.Analysis
       /// <param name="node">The class to analyse.</param>
       public override void VisitClassBlock(ClassBlockSyntax node)
       {
-        //TODO: ignore compiler generated classes
-        mRule.AnalyseClassDeclaration(node);
-        DefaultVisit(node);
+        VisitType(node);
       }
 
       /// <summary>
@@ -42,8 +37,15 @@ namespace StaticAnalysis.Analysis
       /// <param name="node">The structure declaration to analyse.</param>
       public override void VisitStructureBlock(StructureBlockSyntax node)
       {
-        //TODO: ignore compiler generated classes
-        mRule.AnalyseStructureDeclaration(node);
+        VisitType(node);
+      }
+
+      private void VisitType(TypeBlockSyntax node)
+      {
+        //Ignore compiler generated classes
+        if (!AnalysisUtils.IsCompilerGeneratedType(node, CurrentSemanticModel))
+          Rule.AnalyseTypeDeclaration(node, Context, CurrentSemanticModel);
+
         DefaultVisit(node);
       }
     }
@@ -52,21 +54,17 @@ namespace StaticAnalysis.Analysis
     /// Factory method to create a syntax walker specific to this type of rule
     /// </summary>
     /// <returns></returns>
-    protected override VisualBasicSyntaxWalker CreateSyntaxWalker()
+    protected override AnalysisSyntaxWalker CreateSyntaxWalker(AnalysisContext context)
     {
-      return new TypeStatementSyntaxWalker(this);
+      return new TypeStatementSyntaxWalker(this, context);
     }
 
     /// <summary>
     /// Analyses a class statement.
     /// </summary>
-    /// <param name="node">The class declaration to analyse</param>
-    public abstract void AnalyseClassDeclaration(ClassBlockSyntax node);
-
-    /// <summary>
-    /// Analyse a structure statement.
-    /// </summary>
-    /// <param name="node">The structure declaration to analyse.</param>
-    public abstract void AnalyseStructureDeclaration(StructureBlockSyntax node);
+    /// <param name="node">The type declaration to analyse</param>
+    public abstract void AnalyseTypeDeclaration(TypeBlockSyntax node, 
+                                                AnalysisContext context,
+                                                SemanticModel model);
   }
 }

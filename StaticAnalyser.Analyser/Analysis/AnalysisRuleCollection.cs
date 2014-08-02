@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
+using System.Threading.Tasks;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace StaticAnalysis.Analysis
@@ -31,12 +33,10 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Runs each rule on a particular compilation unit.
     /// </summary>
-    /// <param name="compilationUnit">Compilation unit to analyse.</param>
     /// <param name="context">Analysis context.</param>
-    public void ExecuteRules(CompilationUnitSyntax compilationUnit, AnalysisContext context)
+    public async Task ExecuteRulesAsync(AnalysisContext context)
     {
-      foreach (var rule in mRules)
-        rule.Value.ExecuteRule(compilationUnit, context);
+      await Task.WhenAll(mRules.Select(rule => rule.Value.ExecuteRuleAsync(context)));
     }
   }
 }

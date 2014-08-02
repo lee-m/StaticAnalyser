@@ -12,22 +12,15 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Syntax walker which only visits method blocks.
     /// </summary>
-    private class MethodBlockSyntaxWalker : VisualBasicSyntaxWalker
+    private class MethodBlockSyntaxWalker : TypedAnalysisSyntaxWalker<MethodBlockAnalysisRule>
     {
-      /// <summary>
-      /// The analysis rule to invoke for each method statement.
-      /// </summary>
-      private MethodBlockAnalysisRule mRule;
-
       /// <summary>
       /// Initialise a new instance bound to the specified rule.
       /// </summary>
       /// <param name="rule">The rule to invoke for each method found.</param>
-      public MethodBlockSyntaxWalker(MethodBlockAnalysisRule rule)
-        : base(SyntaxWalkerDepth.Node)
-      {
-        mRule = rule;
-      }
+      public MethodBlockSyntaxWalker(MethodBlockAnalysisRule rule, AnalysisContext context)
+        : base(rule, context)
+      { }
 
       /// <summary>
       /// Invokes the bound rule for a method statement.
@@ -35,7 +28,7 @@ namespace StaticAnalysis.Analysis
       /// <param name="node">The method to analyse.</param>
       public override void VisitMethodBlock(MethodBlockSyntax node)
       {
-        mRule.AnalyseMethod(node);
+        Rule.AnalyseMethod(node, Context, CurrentSemanticModel);
       }
     }
 
@@ -43,15 +36,17 @@ namespace StaticAnalysis.Analysis
     /// Factory method to create a syntax walker specific to this type of rule
     /// </summary>
     /// <returns></returns>
-    protected override VisualBasicSyntaxWalker CreateSyntaxWalker()
+    protected override AnalysisSyntaxWalker CreateSyntaxWalker(AnalysisContext context)
     {
-      return new MethodBlockSyntaxWalker(this);
+      return new MethodBlockSyntaxWalker(this, context);
     }
 
     /// <summary>
     /// Analyses a method statement.
     /// </summary>
     /// <param name="node">The method to analyse.</param>
-    public abstract void AnalyseMethod(MethodBlockSyntax methodBlock);
+    public abstract void AnalyseMethod(MethodBlockSyntax methodBlock, 
+                                       AnalysisContext context,
+                                       SemanticModel model);
   }
 }

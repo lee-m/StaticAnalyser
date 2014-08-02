@@ -13,7 +13,9 @@ namespace StaticAnalysis.Rules.Performance
   [Export(typeof(AnalysisRuleBase))]
   public class EmptyFinaliserRule : MethodBlockAnalysisRule
   {
-    public override void AnalyseMethod(MethodBlockSyntax methodBlock)
+    public override void AnalyseMethod(MethodBlockSyntax methodBlock, 
+                                       AnalysisContext context, 
+                                       SemanticModel model)
     {
       MethodStatementSyntax methodStatement = methodBlock.Begin;
 
@@ -54,7 +56,9 @@ namespace StaticAnalysis.Rules.Performance
       }
 
       if(isEmptyFinaliser)
-        ReportDiagnostic(methodStatement.GetLocation(), "Remove empty finaliser.");
+        ReportDiagnostic(context.AnalysisOutputWriter, 
+                         methodStatement.GetLocation(), 
+                         "Remove empty finaliser.");
     }
   }
 }

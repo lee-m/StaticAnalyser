@@ -25,21 +25,21 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Semantic model for the current source file being analysed.
     /// </summary>
-    private readonly SemanticModel mSemanticModel;
+    private readonly Compilation mCompilation;
 
     /// <summary>
     /// Initialise a new context instance.
     /// </summary>
     /// <param name="options">Parsed command line options for the program.</param>
     /// <param name="analysisOutputWriter">Output writer to report any diagnostics.</param>
-    /// <param name="model">The semantic model for the source file being analysed.</param>
+    /// <param name="compilation">The current compilation instance.</param>
     public AnalysisContext(CommandLineOptions options,
                            TextWriter analysisOutputWriter,
-                           SemanticModel model)
+                           Compilation compilation)
     {
       mOptions = options;
       mAnalysisOutputWriter = analysisOutputWriter;
-      mSemanticModel = model;
+      mCompilation = compilation;
     }
 
     /// <summary>
@@ -61,9 +61,9 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Accessor for the current semantic model.
     /// </summary>
-    public SemanticModel Model
+    public Compilation CurrentCompilation
     {
-      get { return mSemanticModel; }
+      get { return mCompilation; }
     }
   }
 }
