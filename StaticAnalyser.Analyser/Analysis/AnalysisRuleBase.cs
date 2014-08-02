@@ -12,12 +12,12 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Contextual information to use during the analysis.
     /// </summary>
-    AnalysisContext mContext;
+    private AnalysisContext mContext;
 
     /// <summary>
-    /// Syntax walker used to traverse a compiation unit.
+    /// Lock object used to synchronise access to the output writer.
     /// </summary>
-    VisualBasicSyntaxWalker mSyntaxWalker;
+    private object mOutputLock;
 
     /// <summary>
     /// Initialises a new rule instance.
@@ -25,7 +25,7 @@ namespace StaticAnalysis.Analysis
     /// <param name="context">Contextual information to use during the analysis.</param>
     public AnalysisRuleBase()
     {
-      mSyntaxWalker = CreateSyntaxWalker();
+      mOutputLock = new object();
     }
 
     /// <summary>
@@ -36,7 +36,9 @@ namespace StaticAnalysis.Analysis
                             AnalysisContext context)
     {
       mContext = context;
-      mSyntaxWalker.Visit(compilationUnit);
+
+      VisualBasicSyntaxWalker walker = CreateSyntaxWalker();
+      walker.Visit(compilationUnit);
     }
 
     /// <summary>
@@ -46,7 +48,7 @@ namespace StaticAnalysis.Analysis
     /// <param name="message">The message to output.</param>
     protected void ReportDiagnostic(Location loc, string message)
     {
-      lock (mContext.AnalysisOutputWriter)
+      lock (mOutputLock)
       {
         //Line numbers are 0 based in roslyn so need to increment it by one to 
         //get the line number the user expects
