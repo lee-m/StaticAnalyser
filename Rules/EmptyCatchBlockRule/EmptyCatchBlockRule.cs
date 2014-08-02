@@ -7,7 +7,7 @@ using StaticAnalysis.Analysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
-namespace StaticAnalysis.Rules.EmptyCatchBlockRule
+namespace StaticAnalysis.Rules.Correctness
 {
   [Export(typeof(AnalysisRuleBase))]
   public class EmptyCatchBlockRule : MethodBlockAnalysisRule

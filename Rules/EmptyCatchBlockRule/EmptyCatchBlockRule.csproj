@@ -7,8 +7,8 @@
     <ProjectGuid>{CE511DC8-8EEC-4B85-9119-D00104506B8A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StaticAnalysis.Rules.EmptyCatchBlockRule</RootNamespace>
-    <AssemblyName>StaticAnalysis.Rules.EmptyCatchBlockRule</AssemblyName>
+    <RootNamespace>StaticAnalysis.Rules.Correctness</RootNamespace>
+    <AssemblyName>StaticAnalysis.Rules.Correctness.EmptyCatchBlockRule</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

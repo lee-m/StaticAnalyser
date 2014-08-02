@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
-namespace StaticAnalysis.Rules.EmptyFinaliserRule
+namespace StaticAnalysis.Rules.Performance
 {
   [Export(typeof(AnalysisRuleBase))]
   public class EmptyFinaliserRule : MethodBlockAnalysisRule

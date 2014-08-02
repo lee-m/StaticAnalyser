@@ -7,8 +7,8 @@
     <ProjectGuid>{36AD2B2B-8EFD-42BA-B17B-EB6A83C8DBE1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StaticAnalysis.Rules.EmptyCatchBlockRule</RootNamespace>
-    <AssemblyName>StaticAnalysis.Rules.EmptyFinaliserRule</AssemblyName>
+    <RootNamespace>StaticAnalysis.Rules.Performance</RootNamespace>
+    <AssemblyName>StaticAnalysis.Rules.Performance.EmptyFinaliserRule</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
