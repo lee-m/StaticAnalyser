@@ -46,7 +46,8 @@ namespace StaticAnalysis.Analysis
     /// </summary>
     /// <param name="loc">Location of the code which triggered the message.</param>
     /// <param name="message">The message to output.</param>
-    protected void ReportDiagnostic(Location loc, string message)
+    /// <param name="messageArgs">Any message formatting arguments.</param>
+    protected void ReportDiagnostic(Location loc, string message, params object[] messageArgs)
     {
       lock (mOutputLock)
       {
@@ -55,7 +56,7 @@ namespace StaticAnalysis.Analysis
         mContext.AnalysisOutputWriter.WriteLine("{0}:{1} - {2}",
                                                 loc.FilePath,
                                                 loc.GetLineSpan().StartLinePosition.Line + 1,
-                                                message);
+                                                string.Format(message, messageArgs));
       }
     }
 
