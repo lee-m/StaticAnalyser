@@ -23,23 +23,23 @@ namespace StaticAnalysis.Analysis
     private readonly TextWriter mAnalysisOutputWriter;
 
     /// <summary>
-    /// The project being analysed.
+    /// Semantic model for the current source file being analysed.
     /// </summary>
-    private readonly Project mProject;
+    private readonly SemanticModel mSemanticModel;
 
     /// <summary>
     /// Initialise a new context instance.
     /// </summary>
     /// <param name="options">Parsed command line options for the program.</param>
     /// <param name="analysisOutputWriter">Output writer to report any diagnostics.</param>
-    /// <param name="project">The project being analysed.</param>
+    /// <param name="model">The semantic model for the source file being analysed.</param>
     public AnalysisContext(CommandLineOptions options,
                            TextWriter analysisOutputWriter,
-                           Project project)
+                           SemanticModel model)
     {
       mOptions = options;
       mAnalysisOutputWriter = analysisOutputWriter;
-      mProject = project;
+      mSemanticModel = model;
     }
 
     /// <summary>
@@ -56,6 +56,14 @@ namespace StaticAnalysis.Analysis
     public TextWriter AnalysisOutputWriter
     {
       get { return mAnalysisOutputWriter; }
+    }
+
+    /// <summary>
+    /// Accessor for the current semantic model.
+    /// </summary>
+    public SemanticModel Model
+    {
+      get { return mSemanticModel; }
     }
   }
 }

@@ -77,7 +77,9 @@ namespace StaticAnalysis
       foreach (var tree in compilation.SyntaxTrees)
       {
         CompilationUnitSyntax root = (CompilationUnitSyntax) await tree.GetRootAsync();
-        mRules.ExecuteRules(root, new AnalysisContext(mOptions, mDiagnosticsWriter, project));
+        SemanticModel model = compilation.GetSemanticModel(tree);
+
+        mRules.ExecuteRules(root, new AnalysisContext(mOptions, mDiagnosticsWriter, model));
       }
     }
   }
