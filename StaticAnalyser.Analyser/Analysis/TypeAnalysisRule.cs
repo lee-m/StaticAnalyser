@@ -26,21 +26,25 @@ namespace StaticAnalysis.Analysis
       }
 
       /// <summary>
-      /// Invokes the bound rule for a class statement.
+      /// Invokes the bound rule for a class declaration.
       /// </summary>
-      /// <param name="node">The method to analyse.</param>
-      public override void VisitClassStatement(ClassStatementSyntax node)
+      /// <param name="node">The class to analyse.</param>
+      public override void VisitClassBlock(ClassBlockSyntax node)
       {
-        mRule.AnalyseClassStatement(node);
+        //TODO: ignore compiler generated classes
+        mRule.AnalyseClassDeclaration(node);
+        DefaultVisit(node);
       }
 
       /// <summary>
-      /// Invokes the bound rule for a structure statement.
+      /// Invokes the bound rule for a structure declaration.
       /// </summary>
-      /// <param name="node">The method to analyse.</param>
-      public override void VisitStructureStatement(StructureStatementSyntax node)
+      /// <param name="node">The structure declaration to analyse.</param>
+      public override void VisitStructureBlock(StructureBlockSyntax node)
       {
-        mRule.AnalyseStructureStatement(node);
+        //TODO: ignore compiler generated classes
+        mRule.AnalyseStructureDeclaration(node);
+        DefaultVisit(node);
       }
     }
 
@@ -56,13 +60,13 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Analyses a class statement.
     /// </summary>
-    /// <param name="node">The class statement to analyse</param>
-    public abstract void AnalyseClassStatement(ClassStatementSyntax node);
+    /// <param name="node">The class declaration to analyse</param>
+    public abstract void AnalyseClassDeclaration(ClassBlockSyntax node);
 
     /// <summary>
     /// Analyse a structure statement.
     /// </summary>
-    /// <param name="node">The structure statement to analyse.</param>
-    public abstract void AnalyseStructureStatement(StructureStatementSyntax node);
+    /// <param name="node">The structure declaration to analyse.</param>
+    public abstract void AnalyseStructureDeclaration(StructureBlockSyntax node);
   }
 }
