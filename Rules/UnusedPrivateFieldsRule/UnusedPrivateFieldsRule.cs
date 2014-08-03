@@ -35,8 +35,8 @@ namespace StaticAnalysis.Rules.Performance
 
         foreach(TypeBlockSyntax typeDecl in typeDecls)
         {
-          //Ignore compiler generated types
-          if (AnalysisUtils.IsCompilerGeneratedType(typeDecl, model))
+          if (context.Options.IgnoreGeneratedCode 
+              && AnalysisUtils.IsCompilerGeneratedType(typeDecl, model))
             continue;
 
           INamedTypeSymbol typeSymbol = model.GetDeclaredSymbol(typeDecl);

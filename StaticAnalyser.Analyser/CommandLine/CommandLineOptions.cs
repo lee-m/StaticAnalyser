@@ -10,5 +10,11 @@
     /// </summary>
     public string SolutionFile
     { get; set; }
+
+    /// <summary>
+    /// Whether any generated code should be exluded from analysis.
+    /// </summary>
+    public bool IgnoreGeneratedCode
+    { get; set; }
   }
 }
