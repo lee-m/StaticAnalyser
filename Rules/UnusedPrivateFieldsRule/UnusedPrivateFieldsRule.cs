@@ -18,7 +18,7 @@ namespace StaticAnalysis.Rules.Performance
   /// Determines whether a class or structure declaration contains any private fields which are never used.
   /// </summary>
   [Export(typeof(AnalysisRuleBase))]
-  public class AvoidUnusedPrivateFields : AnalysisRuleBase
+  public class UnusedPrivateFieldsRule : AnalysisRuleBase
   {
     public override async Task ExecuteRuleAsync(AnalysisContext context)
     {

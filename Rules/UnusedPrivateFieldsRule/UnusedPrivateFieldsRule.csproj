@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StaticAnalysis.Rules.Performance</RootNamespace>
-    <AssemblyName>StaticAnalysis.Rules.Performance.AvoidUnusedPrivateFields</AssemblyName>
+    <AssemblyName>StaticAnalysis.Rules.Performance.UnusedPrivateFieldsRule</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -64,7 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AvoidUnusedPrivateFields.cs" />
+    <Compile Include="UnusedPrivateFieldsRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

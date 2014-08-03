@@ -10,8 +10,8 @@ Rules/EmptyCatchBlockRule/obj/*
 TestApp/TestApp/obj/*
 Rules/EmptyFinaliserRule/bin/*
 Rules/EmptyFinaliserRule/obj/*
-Rules/AvoidUnusedPrivateFields/bin/*
-Rules/AvoidUnusedPrivateFields/obj/*
+Rules/UnusedPrivateFieldsRule/bin/*
+Rules/UnusedPrivateFieldsRule/obj/*
 TestApp/TestApp/bin/*
 pageant.lnk
 Rules.txt

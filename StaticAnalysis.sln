@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Performance", "Performance"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Correctness", "Correctness", "{DB9E068B-C77D-41A9-8FDD-CFBD69EBEA9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvoidUnusedPrivateFields", "Rules\AvoidUnusedPrivateFields\AvoidUnusedPrivateFields.csproj", "{F6C19D53-A129-4348-951D-151D2C37C360}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnusedPrivateFieldsRule", "Rules\UnusedPrivateFieldsRule\UnusedPrivateFieldsRule.csproj", "{F6C19D53-A129-4348-951D-151D2C37C360}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
