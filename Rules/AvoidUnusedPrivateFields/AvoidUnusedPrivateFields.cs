@@ -36,11 +36,8 @@ namespace StaticAnalysis.Rules.Performance
         foreach(TypeBlockSyntax typeDecl in typeDecls)
         {
           //Ignore compiler generated types
-          if(AnalysisUtils.IsCompilerGeneratedType(typeDecl, model))
-          {
-            //Console.WriteLine("Ignoring type {0}", typeDecl.Begin.Identifier.Text);
+          if (AnalysisUtils.IsCompilerGeneratedType(typeDecl, model))
             continue;
-          }
 
           INamedTypeSymbol typeSymbol = model.GetDeclaredSymbol(typeDecl);
 
@@ -81,9 +78,14 @@ namespace StaticAnalysis.Rules.Performance
                                                     && !field.IsImplicitlyDeclared
                                                  select field);
 
+      //For partial classes, we see the type multiple times (once for each partial) so we may 
+      //already have added some fiels for this type
       foreach (IFieldSymbol privateField in privateFields)
-        fieldMapping.Add(privateField, false);
-
+      {
+        if(!fieldMapping.ContainsKey(privateField))
+          fieldMapping.Add(privateField, false);
+      }
+        
       //Make a pass over the identifiers referred to by this type to determine if they in turn
       //refer to a private field
       var identifiers = typeDecl.DescendantNodes().OfType<IdentifierNameSyntax>().ToList();
