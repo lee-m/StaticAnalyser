@@ -9,15 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticAnalyser.Analyser", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rules", "Rules", "{81C3589D-64E2-4354-AB58-62A1545A11A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyCatchBlockRule", "Rules\EmptyCatchBlockRule\EmptyCatchBlockRule.csproj", "{CE511DC8-8EEC-4B85-9119-D00104506B8A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyFinaliserRule", "Rules\EmptyFinaliserRule\EmptyFinaliserRule.csproj", "{36AD2B2B-8EFD-42BA-B17B-EB6A83C8DBE1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Performance", "Performance", "{AAEF35EB-D47A-4DD6-92DE-E3F97DFFD02E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Correctness", "Correctness", "{DB9E068B-C77D-41A9-8FDD-CFBD69EBEA9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnusedPrivateFieldsRule", "Rules\UnusedPrivateFieldsRule\UnusedPrivateFieldsRule.csproj", "{F6C19D53-A129-4348-951D-151D2C37C360}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyCatchBlockRule", "Rules\Correctness\EmptyCatchBlockRule\EmptyCatchBlockRule.csproj", "{CE511DC8-8EEC-4B85-9119-D00104506B8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyFinaliserRule", "Rules\Performance\EmptyFinaliserRule\EmptyFinaliserRule.csproj", "{36AD2B2B-8EFD-42BA-B17B-EB6A83C8DBE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnusedPrivateFieldsRule", "Rules\Performance\UnusedPrivateFieldsRule\UnusedPrivateFieldsRule.csproj", "{F6C19D53-A129-4348-951D-151D2C37C360}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,10 +66,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CE511DC8-8EEC-4B85-9119-D00104506B8A} = {DB9E068B-C77D-41A9-8FDD-CFBD69EBEA9B}
-		{36AD2B2B-8EFD-42BA-B17B-EB6A83C8DBE1} = {AAEF35EB-D47A-4DD6-92DE-E3F97DFFD02E}
 		{AAEF35EB-D47A-4DD6-92DE-E3F97DFFD02E} = {81C3589D-64E2-4354-AB58-62A1545A11A4}
 		{DB9E068B-C77D-41A9-8FDD-CFBD69EBEA9B} = {81C3589D-64E2-4354-AB58-62A1545A11A4}
+		{CE511DC8-8EEC-4B85-9119-D00104506B8A} = {DB9E068B-C77D-41A9-8FDD-CFBD69EBEA9B}
+		{36AD2B2B-8EFD-42BA-B17B-EB6A83C8DBE1} = {AAEF35EB-D47A-4DD6-92DE-E3F97DFFD02E}
 		{F6C19D53-A129-4348-951D-151D2C37C360} = {AAEF35EB-D47A-4DD6-92DE-E3F97DFFD02E}
 	EndGlobalSection
 EndGlobal

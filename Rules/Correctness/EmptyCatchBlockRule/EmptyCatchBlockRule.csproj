@@ -68,7 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\StaticAnalyser.Analyser\StaticAnalyser.Analyser.csproj">
+    <ProjectReference Include="..\..\..\StaticAnalyser.Analyser\StaticAnalyser.Analyser.csproj">
       <Project>{5084eeb8-e7f5-4e2f-996f-f3ea5a5feb0f}</Project>
       <Name>StaticAnalyser.Analyser</Name>
     </ProjectReference>
@@ -78,7 +78,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) ..\..\..\StaticAnalyser\bin\Rules\$(TargetFileName)</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) ..\..\..\..\StaticAnalyser\bin\Rules\$(TargetFileName)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
