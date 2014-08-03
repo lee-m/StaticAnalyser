@@ -15,3 +15,5 @@ Rules/Performance/UnusedPrivateFieldsRule/bin/*
 Rules/Performance/UnusedPrivateFieldsRule/obj/*
 TestApp/TestApp/bin/*
 TestApp/TestApp/obj/*
+Rules/BadPractice/VB6ReturnRule/bin/*
+Rules/BadPractice/VB6ReturnRule/obj/*
