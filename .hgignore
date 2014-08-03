@@ -17,3 +17,5 @@ TestApp/TestApp/bin/*
 TestApp/TestApp/obj/*
 Rules/BadPractice/VB6ReturnRule/bin/*
 Rules/BadPractice/VB6ReturnRule/obj/*
+Rules/BadPractice/OverridableMethodCallInConstructorRule/bin/*
+Rules/BadPractice/OverridableMethodCallInConstructorRule/obj/*
