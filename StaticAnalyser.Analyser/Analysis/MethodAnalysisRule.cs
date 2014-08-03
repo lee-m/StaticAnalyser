@@ -1,6 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
+using StaticAnalysis.Analysis.Utils;
+
 namespace StaticAnalysis.Analysis
 {
   /// <summary>
@@ -27,6 +29,10 @@ namespace StaticAnalysis.Analysis
       /// <param name="node">The method to analyse.</param>
       public override void VisitMethodBlock(MethodBlockSyntax node)
       {
+        if (Context.Options.IgnoreGeneratedCode
+            && AnalysisUtils.HasGeneratedCodeAttribute(node.Begin.AttributeLists, CurrentSemanticModel))
+          return;
+
         Rule.AnalyseMethod(node, Context, CurrentSemanticModel);
       }
     }
