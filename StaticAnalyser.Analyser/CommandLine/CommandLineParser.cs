@@ -15,7 +15,7 @@ namespace StaticAnalysis.CommandLine
     /// <returns>The parsed command line options.</returns>
     public static AnalysisOptions ParseOptions(string[] args, TextWriter outputWriter)
     {
-      if(args.Length == 0)
+      if (args.Length == 0)
       {
         PrintUsage(outputWriter);
         return null;
@@ -24,7 +24,7 @@ namespace StaticAnalysis.CommandLine
       string solutionFile = null;
       bool ignoreGeneratedCode = false;
 
-      foreach(string arg in args)
+      foreach (string arg in args)
       {
         if (arg.StartsWith("/"))
         {
@@ -40,7 +40,7 @@ namespace StaticAnalysis.CommandLine
           solutionFile = arg;
       }
 
-      if(string.IsNullOrEmpty(solutionFile))
+      if (string.IsNullOrEmpty(solutionFile))
       {
         outputWriter.WriteLine("No solution specified.");
         return null;

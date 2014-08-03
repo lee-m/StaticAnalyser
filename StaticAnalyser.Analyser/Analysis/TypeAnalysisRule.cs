@@ -1,7 +1,4 @@
-﻿using System.Linq;
-
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis.Utils;
@@ -43,7 +40,7 @@ namespace StaticAnalysis.Analysis
       private void VisitType(TypeBlockSyntax node)
       {
         //Ignore compiler generated classes if needed
-        if (Context.Options.IgnoreGeneratedCode 
+        if (Context.Options.IgnoreGeneratedCode
             && !AnalysisUtils.IsCompilerGeneratedType(node, CurrentSemanticModel))
           Rule.AnalyseTypeDeclaration(node, Context, CurrentSemanticModel);
 
@@ -64,7 +61,7 @@ namespace StaticAnalysis.Analysis
     /// Analyses a class statement.
     /// </summary>
     /// <param name="node">The type declaration to analyse</param>
-    public abstract void AnalyseTypeDeclaration(TypeBlockSyntax node, 
+    public abstract void AnalyseTypeDeclaration(TypeBlockSyntax node,
                                                 AnalysisContext context,
                                                 SemanticModel model);
   }

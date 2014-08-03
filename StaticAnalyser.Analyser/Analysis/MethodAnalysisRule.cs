@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace StaticAnalysis.Analysis
@@ -45,7 +44,7 @@ namespace StaticAnalysis.Analysis
     /// Analyses a method statement.
     /// </summary>
     /// <param name="node">The method to analyse.</param>
-    public abstract void AnalyseMethod(MethodBlockSyntax methodBlock, 
+    public abstract void AnalyseMethod(MethodBlockSyntax methodBlock,
                                        AnalysisContext context,
                                        SemanticModel model);
   }

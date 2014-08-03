@@ -1,7 +1,7 @@
-﻿using System.Linq;
-
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+
+using System.Linq;
 
 namespace StaticAnalysis.Analysis.Utils
 {
@@ -13,7 +13,7 @@ namespace StaticAnalysis.Analysis.Utils
     /// <param name="typeDecl">The type to check.</param>
     /// <param name="model">Semantic model instance to use.</param>
     /// <returns>True if the type is compiler generated, false if it's not.</returns>
-    public static bool IsCompilerGeneratedType(TypeBlockSyntax typeDecl, 
+    public static bool IsCompilerGeneratedType(TypeBlockSyntax typeDecl,
                                                  SemanticModel model)
     {
       foreach (AttributeSyntax attr in typeDecl.Begin.AttributeLists.SelectMany(attrList => attrList.Attributes))

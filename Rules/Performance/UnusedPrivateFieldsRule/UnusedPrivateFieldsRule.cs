@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.VisualBasic;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis;
 using StaticAnalysis.Analysis.Utils;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StaticAnalysis.Rules.Performance
 {
@@ -33,9 +32,9 @@ namespace StaticAnalysis.Rules.Performance
         //Get a list of type within this compilation unit
         var typeDecls = compilationUnit.DescendantNodes().OfType<TypeBlockSyntax>();
 
-        foreach(TypeBlockSyntax typeDecl in typeDecls)
+        foreach (TypeBlockSyntax typeDecl in typeDecls)
         {
-          if (context.Options.IgnoreGeneratedCode 
+          if (context.Options.IgnoreGeneratedCode
               && AnalysisUtils.IsCompilerGeneratedType(typeDecl, model))
             continue;
 
@@ -50,7 +49,7 @@ namespace StaticAnalysis.Rules.Performance
 
       //Warn for any field which isn't referenced. Need to wait until the end to handle partial
       //classes where a field may be referenced in a different compilation unit
-      foreach(INamedTypeSymbol typeSymbol in fieldDets.Keys)
+      foreach (INamedTypeSymbol typeSymbol in fieldDets.Keys)
       {
         foreach (var field in fieldDets[typeSymbol])
         {
@@ -62,7 +61,7 @@ namespace StaticAnalysis.Rules.Performance
       }
     }
 
-    private void AnalyseTypeDeclaration(TypeBlockSyntax typeDecl, 
+    private void AnalyseTypeDeclaration(TypeBlockSyntax typeDecl,
                                         INamedTypeSymbol typeSymbol,
                                         AnalysisContext context,
                                         SemanticModel model,
@@ -77,14 +76,14 @@ namespace StaticAnalysis.Rules.Performance
                                                     && !field.IsImplicitlyDeclared
                                                  select field);
 
-      //For partial classes, we see the type multiple times (once for each partial) so we may 
+      //For partial classes, we see the type multiple times (once for each partial) so we may
       //already have added some fiels for this type
       foreach (IFieldSymbol privateField in privateFields)
       {
-        if(!fieldMapping.ContainsKey(privateField))
+        if (!fieldMapping.ContainsKey(privateField))
           fieldMapping.Add(privateField, false);
       }
-        
+
       //Make a pass over the identifiers referred to by this type to determine if they in turn
       //refer to a private field
       var identifiers = typeDecl.DescendantNodes().OfType<IdentifierNameSyntax>().ToList();

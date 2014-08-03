@@ -1,20 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.ComponentModel.Composition;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.VisualBasic;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using System.ComponentModel.Composition;
+using System.Linq;
 
 namespace StaticAnalysis.Rules.Performance
 {
   [Export(typeof(AnalysisRuleBase))]
   public class EmptyFinaliserRule : MethodBlockAnalysisRule
   {
-    public override void AnalyseMethod(MethodBlockSyntax methodBlock, 
-                                       AnalysisContext context, 
+    public override void AnalyseMethod(MethodBlockSyntax methodBlock,
+                                       AnalysisContext context,
                                        SemanticModel model)
     {
       MethodStatementSyntax methodStatement = methodBlock.Begin;
@@ -42,20 +41,20 @@ namespace StaticAnalysis.Rules.Performance
 
       if (!methodBlock.Statements.Any())
         isEmptyFinaliser = true;
-      else if(methodBlock.Statements.Count == 1)
+      else if (methodBlock.Statements.Count == 1)
       {
         //See if the only statement is a call to the base finaliser
         var stmt = methodBlock.Statements.First();
         var memberAccessExpression = stmt.DescendantNodes().OfType<MemberAccessExpressionSyntax>().FirstOrDefault();
 
-        if(memberAccessExpression == null)
+        if (memberAccessExpression == null)
           return;
 
         isEmptyFinaliser = (memberAccessExpression.Expression.VisualBasicKind() == SyntaxKind.MyBaseExpression
                             && memberAccessExpression.Name.Identifier.Text == "Finalize");
       }
 
-      if(isEmptyFinaliser)
+      if (isEmptyFinaliser)
         context.Results.AddWarning(methodStatement.GetLocation(), "Remove empty finaliser.");
     }
   }

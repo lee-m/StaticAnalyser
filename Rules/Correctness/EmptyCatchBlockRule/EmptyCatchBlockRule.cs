@@ -1,18 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.ComponentModel.Composition;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using System.ComponentModel.Composition;
+using System.Linq;
 
 namespace StaticAnalysis.Rules.Correctness
 {
   [Export(typeof(AnalysisRuleBase))]
   public class EmptyCatchBlockRule : MethodBlockAnalysisRule
   {
-    public override void AnalyseMethod(MethodBlockSyntax methodBlock, 
+    public override void AnalyseMethod(MethodBlockSyntax methodBlock,
                                        AnalysisContext context,
                                        SemanticModel model)
     {

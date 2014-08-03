@@ -1,9 +1,6 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using Microsoft.CodeAnalysis;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using System.Threading.Tasks;
 
 namespace StaticAnalysis.Analysis
 {
@@ -19,7 +16,7 @@ namespace StaticAnalysis.Analysis
     public virtual async Task ExecuteRuleAsync(AnalysisContext context)
     {
       AnalysisSyntaxWalker walker = CreateSyntaxWalker(context);
-      
+
       foreach (var tree in context.CurrentCompilation.SyntaxTrees)
       {
         SemanticModel model = context.CurrentCompilation.GetSemanticModel(tree);

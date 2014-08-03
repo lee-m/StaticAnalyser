@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.CodeAnalysis;
+
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-using Microsoft.CodeAnalysis;
 
 namespace StaticAnalysis.Analysis
 {
@@ -24,7 +24,7 @@ namespace StaticAnalysis.Analysis
       /// <summary>
       /// Source file the warning appears in
       /// </summary>
-      public string SourceFile { get; set;}
+      public string SourceFile { get; set; }
 
       /// <summary>
       /// Line number of the code which triggered it.
@@ -66,14 +66,13 @@ namespace StaticAnalysis.Analysis
     {
       lock (mResults)
       {
-        //Line numbers are 0 based in roslyn so need to increment it by one to 
+        //Line numbers are 0 based in roslyn so need to increment it by one to
         //get the line number the user expects
-        mResults.Add(new AnalysisWarning() 
+        mResults.Add(new AnalysisWarning()
           {
             Message = string.Format(message, messageArgs),
             SourceFile = location.FilePath,
             LineNumber = location.GetLineSpan().StartLinePosition.Line + 1,
-            
           });
       }
     }

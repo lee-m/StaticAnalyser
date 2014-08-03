@@ -1,12 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.CodeAnalysis.VisualBasic;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis;
-using StaticAnalysis.CommandLine;
 
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -53,7 +50,7 @@ namespace StaticAnalysis
     /// <returns></returns>
     private async Task AnalyseProjectAsync(Project project, AnalysisResults results, AnalysisOptions options)
     {
-      VisualBasicCompilation compilation = (VisualBasicCompilation) await project.GetCompilationAsync();
+      VisualBasicCompilation compilation = (VisualBasicCompilation)await project.GetCompilationAsync();
       await mRules.ExecuteRulesAsync(new AnalysisContext(options, results, compilation));
     }
   }

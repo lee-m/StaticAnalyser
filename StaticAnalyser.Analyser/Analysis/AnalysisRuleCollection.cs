@@ -6,9 +6,6 @@ using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-
 namespace StaticAnalysis.Analysis
 {
   /// <summary>

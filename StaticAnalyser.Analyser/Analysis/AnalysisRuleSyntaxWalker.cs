@@ -1,10 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace StaticAnalysis.Analysis
 {
-  public class AnalysisSyntaxWalker: VisualBasicSyntaxWalker
+  public class AnalysisSyntaxWalker : VisualBasicSyntaxWalker
   {
     private AnalysisContext mContext;
     private SemanticModel mCurrentModel;
@@ -35,7 +34,6 @@ namespace StaticAnalysis.Analysis
   public class TypedAnalysisSyntaxWalker<TRule> : AnalysisSyntaxWalker where TRule : AnalysisRuleBase
   {
     private TRule mRule;
-
 
     public TypedAnalysisSyntaxWalker(TRule rule, AnalysisContext context)
       : base(context)

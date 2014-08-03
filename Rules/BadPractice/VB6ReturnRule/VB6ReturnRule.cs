@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.ComponentModel.Composition;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using System.ComponentModel.Composition;
+using System.Linq;
 
 namespace StaticAnalysis.Rules.BadPractice
 {
@@ -18,12 +17,12 @@ namespace StaticAnalysis.Rules.BadPractice
       //variable with the same name as the enclosing function.
       var assignStatements = methodBlock.DescendantNodes().OfType<AssignmentStatementSyntax>();
 
-      foreach(AssignmentStatementSyntax assignStatement in assignStatements)
+      foreach (AssignmentStatementSyntax assignStatement in assignStatements)
       {
         SymbolInfo lhsSymbol = model.GetSymbolInfo(assignStatement.Left);
-        
-        if(lhsSymbol.Symbol != null 
-           && lhsSymbol.Symbol.Kind == SymbolKind.Local 
+
+        if (lhsSymbol.Symbol != null
+           && lhsSymbol.Symbol.Kind == SymbolKind.Local
            && lhsSymbol.Symbol.Name == methodBlock.Begin.Identifier.Text)
         {
           context.Results.AddWarning(assignStatement.GetLocation(),

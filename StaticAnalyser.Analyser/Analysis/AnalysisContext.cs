@@ -1,9 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.MSBuild;
-
-using StaticAnalysis.CommandLine;
-
-using System.IO;
 
 namespace StaticAnalysis.Analysis
 {

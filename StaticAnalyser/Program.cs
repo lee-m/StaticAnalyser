@@ -1,8 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-
-using StaticAnalysis.Analysis;
+﻿using StaticAnalysis.Analysis;
 using StaticAnalysis.CommandLine;
+
+using System;
+using System.Diagnostics;
 
 namespace StaticAnalysis
 {
