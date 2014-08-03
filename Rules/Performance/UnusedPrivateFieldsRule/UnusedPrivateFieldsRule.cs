@@ -55,10 +55,9 @@ namespace StaticAnalysis.Rules.Performance
         foreach (var field in fieldDets[typeSymbol])
         {
           if (!field.Value)
-            ReportDiagnostic(context.AnalysisOutputWriter,
-                             field.Key.Locations.First(),
-                             "Field '{0}' within type '{1}' is never referenced.",
-                             field.Key.Name, typeSymbol.Name);
+            context.Results.AddWarning(field.Key.Locations.First(),
+                                       "Field '{0}' within type '{1}' is never referenced.",
+                                       field.Key.Name, typeSymbol.Name);
         }
       }
     }

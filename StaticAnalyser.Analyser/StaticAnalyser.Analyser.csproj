@@ -82,12 +82,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\AnalysisResults.cs" />
     <Compile Include="Analysis\AnalysisRuleCollection.cs" />
     <Compile Include="Analysis\AnalysisRuleSyntaxWalker.cs" />
     <Compile Include="Utils\AnalysisUtils.cs" />
     <Compile Include="Analysis\MethodAnalysisRule.cs" />
     <Compile Include="Analysis\TypeAnalysisRule.cs" />
-    <Compile Include="CommandLine\CommandLineOptions.cs" />
+    <Compile Include="AnalysisOptions.cs" />
     <Compile Include="CommandLine\CommandLineParser.cs" />
     <Compile Include="Analysis\AnalysisContext.cs" />
     <Compile Include="Analysis\AnalysisRuleBase.cs" />

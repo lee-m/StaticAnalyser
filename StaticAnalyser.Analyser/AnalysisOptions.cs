@@ -1,9 +1,9 @@
-﻿namespace StaticAnalysis.CommandLine
+﻿namespace StaticAnalysis
 {
   /// <summary>
   /// Analysis options passed on the command line.
   /// </summary>
-  public class CommandLineOptions
+  public class AnalysisOptions
   {
     /// <summary>
     /// Name of the solution file to analyse.

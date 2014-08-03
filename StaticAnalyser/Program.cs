@@ -1,5 +1,8 @@
-﻿using StaticAnalysis.Analysis;
-using System;
+﻿using System;
+using System.Diagnostics;
+
+using StaticAnalysis.Analysis;
+using StaticAnalysis.CommandLine;
 
 namespace StaticAnalysis
 {
@@ -14,8 +17,18 @@ namespace StaticAnalysis
     /// <param name="args">Command line arguments.</param>
     private static void Main(string[] args)
     {
+      Stopwatch analysisTimer = Stopwatch.StartNew();
+      AnalysisOptions options = CommandLineParser.ParseOptions(args, Console.Out);
+
+      if (options == null)
+        return;
+
       StaticAnalyser analyser = new StaticAnalyser();
-      analyser.RunAnalysisAsync(args, Console.Out).Wait();
+      AnalysisResults results = analyser.RunAnalysisAsync(options).Result;
+
+      analysisTimer.Stop();
+      results.OutputResults(Console.Out);
+      Console.WriteLine("Analysis completed in {0}", analysisTimer.Elapsed.ToString());
     }
   }
 }

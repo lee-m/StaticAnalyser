@@ -56,9 +56,7 @@ namespace StaticAnalysis.Rules.Performance
       }
 
       if(isEmptyFinaliser)
-        ReportDiagnostic(context.AnalysisOutputWriter, 
-                         methodStatement.GetLocation(), 
-                         "Remove empty finaliser.");
+        context.Results.AddWarning(methodStatement.GetLocation(), "Remove empty finaliser.");
     }
   }
 }

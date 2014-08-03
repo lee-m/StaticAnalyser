@@ -13,7 +13,7 @@ namespace StaticAnalysis.CommandLine
     /// <param name="args">Arguments to parse.</param>
     /// <param name="outputWriter">Output writer to record any diagnosics to.</param>
     /// <returns>The parsed command line options.</returns>
-    public static CommandLineOptions ParseOptions(string[] args, TextWriter outputWriter)
+    public static AnalysisOptions ParseOptions(string[] args, TextWriter outputWriter)
     {
       if(args.Length == 0)
       {
@@ -46,7 +46,7 @@ namespace StaticAnalysis.CommandLine
         return null;
       }
 
-      return new CommandLineOptions
+      return new AnalysisOptions
                  {
                    SolutionFile = solutionFile,
                    IgnoreGeneratedCode = ignoreGeneratedCode

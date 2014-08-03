@@ -15,12 +15,12 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Command line options.
     /// </summary>
-    private readonly CommandLineOptions mOptions;
+    private readonly AnalysisOptions mOptions;
 
     /// <summary>
-    /// Output writer to report any diagnostics.
+    /// Set of warnings found
     /// </summary>
-    private readonly TextWriter mAnalysisOutputWriter;
+    private readonly AnalysisResults mResults;
 
     /// <summary>
     /// Semantic model for the current source file being analysed.
@@ -31,31 +31,31 @@ namespace StaticAnalysis.Analysis
     /// Initialise a new context instance.
     /// </summary>
     /// <param name="options">Parsed command line options for the program.</param>
-    /// <param name="analysisOutputWriter">Output writer to report any diagnostics.</param>
+    /// <param name="results">Collection of analysis warnings.</param>
     /// <param name="compilation">The current compilation instance.</param>
-    public AnalysisContext(CommandLineOptions options,
-                           TextWriter analysisOutputWriter,
+    public AnalysisContext(AnalysisOptions options,
+                           AnalysisResults results,
                            Compilation compilation)
     {
       mOptions = options;
-      mAnalysisOutputWriter = analysisOutputWriter;
+      mResults = results;
       mCompilation = compilation;
     }
 
     /// <summary>
     /// Accessor for the command line options.
     /// </summary>
-    public CommandLineOptions Options
+    public AnalysisOptions Options
     {
       get { return mOptions; }
     }
 
     /// <summary>
-    /// Accessor for the analysis output writer.
+    /// Set of warnings found during analysis.
     /// </summary>
-    public TextWriter AnalysisOutputWriter
+    public AnalysisResults Results
     {
-      get { return mAnalysisOutputWriter; }
+      get { return mResults; }
     }
 
     /// <summary>

@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using StaticAnalysis.Analysis;
 using StaticAnalysis.CommandLine;
 
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,16 +17,6 @@ namespace StaticAnalysis
   /// </summary>
   public class StaticAnalyser
   {
-    /// <summary>
-    /// Parsed command line options.
-    /// </summary>
-    private CommandLineOptions mOptions;
-
-    /// <summary>
-    /// Output for recording any diagostics.
-    /// </summary>
-    private TextWriter mDiagnosticsWriter;
-
     /// <summary>
     /// Collection of rules to run.
     /// </summary>
@@ -44,35 +33,28 @@ namespace StaticAnalysis
     /// <summary>
     /// Runs the analysis using the specified command line options.
     /// </summary>
-    /// <param name="args">Command line arguments.</param>
-    /// <param name="outputWriter">Output writer to record any diagnosics</param>
-    public async Task RunAnalysisAsync(string[] args, TextWriter outputWriter)
+    /// <param name="options">Analysis options for this run.</param>
+    public async Task<AnalysisResults> RunAnalysisAsync(AnalysisOptions options)
     {
-      mDiagnosticsWriter = outputWriter;
-      mOptions = StaticAnalysis.CommandLine.CommandLineParser.ParseOptions(args, outputWriter);
+      AnalysisResults results = new AnalysisResults();
+      MSBuildWorkspace workspace = MSBuildWorkspace.Create();
+      Solution solution = workspace.OpenSolutionAsync(options.SolutionFile).Result;
 
-      if (mOptions == null)
-        return;
-
-      Stopwatch analysisTimer = Stopwatch.StartNew();
-
-      var workspace = MSBuildWorkspace.Create();
-      var solution = workspace.OpenSolutionAsync(mOptions.SolutionFile).Result;
-      await Task.WhenAll(solution.Projects.Select(proj => AnalyseProjectAsync(proj)));
-
-      analysisTimer.Stop();
-      mDiagnosticsWriter.WriteLine("Analysis completed in {0}", analysisTimer.Elapsed.ToString());
+      await Task.WhenAll(solution.Projects.Select(proj => AnalyseProjectAsync(proj, results, options)));
+      return results;
     }
 
     /// <summary>
     /// Asynchronously analyses a single project.
     /// </summary>
     /// <param name="project">The project to analyse.</param>
+    /// <param name="results">Holds the set of analysis warnings produced.</param>
+    /// <param name="options">Analysis options.</param>
     /// <returns></returns>
-    private async Task AnalyseProjectAsync(Project project)
+    private async Task AnalyseProjectAsync(Project project, AnalysisResults results, AnalysisOptions options)
     {
       VisualBasicCompilation compilation = (VisualBasicCompilation) await project.GetCompilationAsync();
-      await mRules.ExecuteRulesAsync(new AnalysisContext(mOptions, mDiagnosticsWriter, compilation));
+      await mRules.ExecuteRulesAsync(new AnalysisContext(options, results, compilation));
     }
   }
 }

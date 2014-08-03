@@ -21,9 +21,7 @@ namespace StaticAnalysis.Rules.Correctness
       foreach (var catchBlock in catchBlocks)
       {
         if (!catchBlock.Statements.Any())
-          ReportDiagnostic(context.AnalysisOutputWriter, 
-                           catchBlock.GetLocation(), 
-                           "Remove empty catch block.");
+          context.Results.AddWarning(catchBlock.GetLocation(), "Remove empty catch block.");
       }
     }
   }
