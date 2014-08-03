@@ -40,8 +40,11 @@ namespace StaticAnalysis.Analysis
       private void VisitType(TypeBlockSyntax node)
       {
         //Ignore compiler generated classes if needed
-        if (Context.Options.IgnoreGeneratedCode
-            && !AnalysisUtils.IsCompilerGeneratedType(node, CurrentSemanticModel))
+        bool ignoreType = Context.Options.IgnoreGeneratedCode
+                          ? AnalysisUtils.HasGeneratedCodeAttribute(node.Begin.AttributeLists, CurrentSemanticModel)
+                          : false;
+
+        if (!ignoreType)
           Rule.AnalyseTypeDeclaration(node, Context, CurrentSemanticModel);
 
         DefaultVisit(node);

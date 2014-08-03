@@ -35,7 +35,7 @@ namespace StaticAnalysis.Rules.Performance
         foreach (TypeBlockSyntax typeDecl in typeDecls)
         {
           if (context.Options.IgnoreGeneratedCode
-              && AnalysisUtils.IsCompilerGeneratedType(typeDecl, model))
+              && AnalysisUtils.HasGeneratedCodeAttribute(typeDecl.Begin.AttributeLists, model))
             continue;
 
           INamedTypeSymbol typeSymbol = model.GetDeclaredSymbol(typeDecl);
