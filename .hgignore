@@ -19,3 +19,5 @@ Rules/BadPractice/VB6ReturnRule/bin/*
 Rules/BadPractice/VB6ReturnRule/obj/*
 Rules/BadPractice/OverridableMethodCallInConstructorRule/bin/*
 Rules/BadPractice/OverridableMethodCallInConstructorRule/obj/*
+Rules/BadPractice/AvoidVisibleConstantFieldRule/bin/*
+Rules/BadPractice/AvoidVisibleConstantFieldRule/obj/*
