@@ -3,21 +3,26 @@ syntax: glob
 *.suo
 pageant.lnk
 Rules.txt
-StaticAnalyser/bin/*
-StaticAnalyser/obj/*
-StaticAnalyser.Analyser/bin/*
-StaticAnalyser.Analyser/obj/*
 Rules/Correctness/EmptyCatchBlockRule/bin/*
 Rules/Correctness/EmptyCatchBlockRule/obj/*
 Rules/Performance/EmptyFinaliserRule/bin/*
 Rules/Performance/EmptyFinaliserRule/obj/*
 Rules/Performance/UnusedPrivateFieldsRule/bin/*
 Rules/Performance/UnusedPrivateFieldsRule/obj/*
-TestApp/TestApp/bin/*
-TestApp/TestApp/obj/*
 Rules/BadPractice/VB6ReturnRule/bin/*
 Rules/BadPractice/VB6ReturnRule/obj/*
 Rules/BadPractice/OverridableMethodCallInConstructorRule/bin/*
 Rules/BadPractice/OverridableMethodCallInConstructorRule/obj/*
 Rules/BadPractice/AvoidVisibleConstantFieldRule/bin/*
 Rules/BadPractice/AvoidVisibleConstantFieldRule/obj/*
+StaticAnalyser/bin/*
+StaticAnalyser/obj/*
+StaticAnalyser.Analyser/bin/*
+StaticAnalyser.Analyser/obj/*
+TestApp/TestApp/bin/*
+TestApp/TestApp/obj/*
+TestResults/*
+Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/bin/Debug/*
+Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/obj/Debug/*
+Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/bin/*
+Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/obj/*

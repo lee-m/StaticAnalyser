@@ -20,7 +20,7 @@ namespace StaticAnalysis.Rules.Correctness
       foreach (var catchBlock in catchBlocks)
       {
         if (!catchBlock.Statements.Any())
-          context.Results.AddWarning(catchBlock.GetLocation(), "Remove empty catch block.");
+          context.AnalysisResults.AddWarning(catchBlock.GetLocation(), "Remove empty catch block.");
       }
     }
   }

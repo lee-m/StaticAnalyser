@@ -13,17 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Performance", "Performance"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Correctness", "Correctness", "{DB9E068B-C77D-41A9-8FDD-CFBD69EBEA9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyCatchBlockRule", "Rules\Correctness\EmptyCatchBlockRule\EmptyCatchBlockRule.csproj", "{CE511DC8-8EEC-4B85-9119-D00104506B8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rules.Correctness.EmptyCatchBlockRule", "Rules\Correctness\EmptyCatchBlockRule\Rules.Correctness.EmptyCatchBlockRule.csproj", "{CE511DC8-8EEC-4B85-9119-D00104506B8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmptyFinaliserRule", "Rules\Performance\EmptyFinaliserRule\EmptyFinaliserRule.csproj", "{36AD2B2B-8EFD-42BA-B17B-EB6A83C8DBE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rules.Performance.EmptyFinaliserRule", "Rules\Performance\EmptyFinaliserRule\Rules.Performance.EmptyFinaliserRule.csproj", "{36AD2B2B-8EFD-42BA-B17B-EB6A83C8DBE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnusedPrivateFieldsRule", "Rules\Performance\UnusedPrivateFieldsRule\UnusedPrivateFieldsRule.csproj", "{F6C19D53-A129-4348-951D-151D2C37C360}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rules.Performance.UnusedPrivateFieldsRule", "Rules\Performance\UnusedPrivateFieldsRule\Rules.Performance.UnusedPrivateFieldsRule.csproj", "{F6C19D53-A129-4348-951D-151D2C37C360}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BadPractice", "BadPractice", "{245A3900-B3E1-4566-A406-B986E5CCBE42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VB6ReturnRule", "Rules\BadPractice\VB6ReturnRule\VB6ReturnRule.csproj", "{71322A05-1AD0-4A09-9DFD-4CB69A0BC4EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rules.BadPractice.VB6ReturnRule", "Rules\BadPractice\VB6ReturnRule\Rules.BadPractice.VB6ReturnRule.csproj", "{71322A05-1AD0-4A09-9DFD-4CB69A0BC4EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverridableMethodCallInConstructorRule", "Rules\BadPractice\OverridableMethodCallInConstructorRule\OverridableMethodCallInConstructorRule.csproj", "{E765D9A2-2B1A-450C-8A10-1FCA3033610A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rules.BadPractice.OverridableMethodCallInConstructorRule", "Rules\BadPractice\OverridableMethodCallInConstructorRule\Rules.BadPractice.OverridableMethodCallInConstructorRule.csproj", "{E765D9A2-2B1A-450C-8A10-1FCA3033610A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1F2A1F7C-D32A-458D-A0F5-5A55F4883203}"
 	ProjectSection(SolutionItems) = preProject
@@ -32,7 +32,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1F2A1F
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvoidVisibleConstantFieldRule", "Rules\BadPractice\AvoidVisibleConstantFieldRule\AvoidVisibleConstantFieldRule.csproj", "{C5DD04DD-CA2D-483D-9D33-9B1D2CF13434}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rules.BadPractice.AvoidVisibleConstantFieldRule", "Rules\BadPractice\AvoidVisibleConstantFieldRule\Rules.BadPractice.AvoidVisibleConstantFieldRule.csproj", "{C5DD04DD-CA2D-483D-9D33-9B1D2CF13434}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{D4183271-4950-47C9-823B-236BFBCD3B29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BadPractice", "BadPractice", "{2DEF3BD7-4876-4B78-ADB8-E2244B37E2D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Correctness", "Correctness", "{04BA12C8-ABF3-40C8-AC0D-5E0FF2820D96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Performance", "Performance", "{5B2F332D-EEAB-4998-A177-758EC7178A00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.BadPractice.AvoidVisibleConstantsRule", "Unit Tests\BadPractice\UnitTests.BadPractice.AvoidVisibleConstants\UnitTests.BadPractice.AvoidVisibleConstantsRule.csproj", "{8A03166B-35EF-41E2-83EC-9A9ACCDB5693}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.BadPractice.VB6ReturnRule", "Unit Tests\BadPractice\UnitTests.BadPractice.VB6ReturnRule\UnitTests.BadPractice.VB6ReturnRule.csproj", "{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +106,18 @@ Global
 		{C5DD04DD-CA2D-483D-9D33-9B1D2CF13434}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5DD04DD-CA2D-483D-9D33-9B1D2CF13434}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C5DD04DD-CA2D-483D-9D33-9B1D2CF13434}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A03166B-35EF-41E2-83EC-9A9ACCDB5693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A03166B-35EF-41E2-83EC-9A9ACCDB5693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A03166B-35EF-41E2-83EC-9A9ACCDB5693}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A03166B-35EF-41E2-83EC-9A9ACCDB5693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A03166B-35EF-41E2-83EC-9A9ACCDB5693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A03166B-35EF-41E2-83EC-9A9ACCDB5693}.Release|x86.ActiveCfg = Release|Any CPU
+		{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,5 +132,10 @@ Global
 		{71322A05-1AD0-4A09-9DFD-4CB69A0BC4EA} = {245A3900-B3E1-4566-A406-B986E5CCBE42}
 		{E765D9A2-2B1A-450C-8A10-1FCA3033610A} = {245A3900-B3E1-4566-A406-B986E5CCBE42}
 		{C5DD04DD-CA2D-483D-9D33-9B1D2CF13434} = {245A3900-B3E1-4566-A406-B986E5CCBE42}
+		{2DEF3BD7-4876-4B78-ADB8-E2244B37E2D5} = {D4183271-4950-47C9-823B-236BFBCD3B29}
+		{04BA12C8-ABF3-40C8-AC0D-5E0FF2820D96} = {D4183271-4950-47C9-823B-236BFBCD3B29}
+		{5B2F332D-EEAB-4998-A177-758EC7178A00} = {D4183271-4950-47C9-823B-236BFBCD3B29}
+		{8A03166B-35EF-41E2-83EC-9A9ACCDB5693} = {2DEF3BD7-4876-4B78-ADB8-E2244B37E2D5}
+		{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE} = {2DEF3BD7-4876-4B78-ADB8-E2244B37E2D5}
 	EndGlobalSection
 EndGlobal

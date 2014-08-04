@@ -28,8 +28,8 @@ namespace StaticAnalysis.Rules.BadPractice
              && callSymbol.Symbol.Kind == SymbolKind.Method
              && callSymbol.Symbol.IsVirtual)
           {
-            context.Results.AddWarning(invokeStmt.GetLocation(),
-                                       "Avoid calling Overridable method '{0}' within constructor of type '{1}'",
+            context.AnalysisResults.AddWarning(invokeStmt.GetLocation(),
+                                       "Avoid calling Overridable method '{0}' within constructor of type '{1}'.",
                                        callSymbol.Symbol.Name,
                                        node.Begin.Identifier.Text);
           }

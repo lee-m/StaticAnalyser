@@ -25,8 +25,8 @@ namespace StaticAnalysis.Rules.BadPractice
            && lhsSymbol.Symbol.Kind == SymbolKind.Local
            && lhsSymbol.Symbol.Name == methodBlock.Begin.Identifier.Text)
         {
-          context.Results.AddWarning(assignStatement.GetLocation(),
-                                     "Avoid use of VB6 style return statements");
+          context.AnalysisResults.AddWarning(assignStatement.GetLocation(),
+                                     "Avoid use of VB6 style return statements.");
         }
       }
     }

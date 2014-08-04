@@ -48,7 +48,7 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Set of warnings found during analysis.
     /// </summary>
-    public AnalysisResults Results
+    public AnalysisResults AnalysisResults
     {
       get { return mResults; }
     }

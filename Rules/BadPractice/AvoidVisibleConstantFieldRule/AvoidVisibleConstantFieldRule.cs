@@ -24,7 +24,7 @@ namespace StaticAnalysis.Rules.BadPractice
         {
           foreach (VariableDeclaratorSyntax varDecl in fieldDecl.Declarators)
           {
-            context.Results.AddWarning(varDecl.GetLocation(),
+            context.AnalysisResults.AddWarning(varDecl.GetLocation(),
                                        "'Public Const' field '{0}' in type '{1}' should be declared as 'Shared ReadOnly' instead.",
                                        varDecl.Names.First(),
                                        node.Begin.Identifier.Text);

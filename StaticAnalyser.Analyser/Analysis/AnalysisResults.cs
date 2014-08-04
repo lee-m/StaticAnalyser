@@ -14,44 +14,14 @@ namespace StaticAnalysis.Analysis
     /// <summary>
     /// Set of warnings generated.
     /// </summary>
-    private List<AnalysisWarning> mResults;
-
-    /// <summary>
-    /// Details about a single warning.
-    /// </summary>
-    private class AnalysisWarning
-    {
-      /// <summary>
-      /// Source file the warning appears in
-      /// </summary>
-      public string SourceFile { get; set; }
-
-      /// <summary>
-      /// Line number of the code which triggered it.
-      /// </summary>
-      public int LineNumber { get; set; }
-
-      /// <summary>
-      /// The warning message.
-      /// </summary>
-      public string Message { get; set; }
-
-      /// <summary>
-      /// Converts this warning into a string to show to the user.
-      /// </summary>
-      /// <returns></returns>
-      public override string ToString()
-      {
-        return string.Format("{0}:{1} - {2}", SourceFile, LineNumber, Message);
-      }
-    }
+    private List<AnalysisMessage> mResults;
 
     /// <summary>
     /// Default constructor.
     /// </summary>
     public AnalysisResults()
     {
-      mResults = new List<AnalysisWarning>();
+      mResults = new List<AnalysisMessage>();
     }
 
     /// <summary>
@@ -68,7 +38,7 @@ namespace StaticAnalysis.Analysis
       {
         //Line numbers are 0 based in roslyn so need to increment it by one to
         //get the line number the user expects
-        mResults.Add(new AnalysisWarning()
+        mResults.Add(new AnalysisMessage()
           {
             Message = string.Format(message, messageArgs),
             SourceFile = location.FilePath,
@@ -88,5 +58,43 @@ namespace StaticAnalysis.Analysis
       foreach (var result in orderedResults)
         outputWriter.WriteLine(result.ToString());
     }
+
+    /// <summary>
+    /// Accessor for the analysis results.
+    /// </summary>
+    public IEnumerable<AnalysisMessage> Messages
+    {
+      get { return mResults; }
+    }
+  }
+}
+
+/// <summary>
+/// Details about a single warning.
+/// </summary>
+public class AnalysisMessage
+{
+  /// <summary>
+  /// Source file the warning appears in
+  /// </summary>
+  public string SourceFile { get; set; }
+
+  /// <summary>
+  /// Line number of the code which triggered it.
+  /// </summary>
+  public int LineNumber { get; set; }
+
+  /// <summary>
+  /// The warning message.
+  /// </summary>
+  public string Message { get; set; }
+
+  /// <summary>
+  /// Converts this warning into a string to show to the user.
+  /// </summary>
+  /// <returns></returns>
+  public override string ToString()
+  {
+    return string.Format("{0}:{1} - {2}", SourceFile, LineNumber, Message);
   }
 }
