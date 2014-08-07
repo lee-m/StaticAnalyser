@@ -27,3 +27,5 @@ Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/obj/Debug/*
 Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/bin/*
 Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/obj/*
 TestApp/*
+Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/bin/*
+Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/obj/*

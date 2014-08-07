@@ -2,11 +2,25 @@
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using System.Linq;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace StaticAnalysis.Analysis.Utils
 {
   public static class AnalysisUtils
   {
+    /// <summary>
+    /// Determines if any attribute in a list of attributes applied to a symbol represents a generated 
+    /// code attibute.
+    /// </summary>
+    /// <param name="attributes">List of attributes to check.</param>
+    /// <returns>True if the list of attributes contains the generated code attribute.</returns>
+    public static bool HasGeneratedCodeAttribute(ImmutableArray<AttributeData> attributes)
+    {
+      return attributes.Any(attr => attr.AttributeClass.ToString() == typeof(GeneratedCodeAttribute).FullName);
+    }
+
     /// <summary>
     /// Determines whether a set of attributes contains the GeneratedCodeAttribute
     /// </summary>
@@ -22,7 +36,7 @@ namespace StaticAnalysis.Analysis.Utils
         var symbol = model.GetSymbolInfo(attr.Name);
 
         if (symbol.Symbol != null
-           && symbol.Symbol.ContainingSymbol.ToString() == "System.CodeDom.Compiler.GeneratedCodeAttribute")
+           && symbol.Symbol.ContainingSymbol.ToString() == typeof(GeneratedCodeAttribute).FullName)
           return true;
       }
 

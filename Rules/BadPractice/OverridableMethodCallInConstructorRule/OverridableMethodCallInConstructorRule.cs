@@ -24,9 +24,15 @@ namespace StaticAnalysis.Rules.BadPractice
         {
           SymbolInfo callSymbol = model.GetSymbolInfo(invokeStmt.Expression);
 
+          //Ignore if the target is compiler generated and we're ignoring generated code
+          bool ignore = context.Options.IgnoreGeneratedCode
+                        ? AnalysisUtils.HasGeneratedCodeAttribute(callSymbol.Symbol.GetAttributes())
+                        : false;
+
           if (callSymbol.Symbol != null
              && callSymbol.Symbol.Kind == SymbolKind.Method
-             && callSymbol.Symbol.IsVirtual)
+             && callSymbol.Symbol.IsVirtual
+             && !ignore)
           {
             context.AnalysisResults.AddWarning(invokeStmt.GetLocation(),
                                        "Avoid calling Overridable method '{0}' within constructor of type '{1}'.",
