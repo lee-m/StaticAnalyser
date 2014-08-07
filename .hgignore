@@ -26,3 +26,4 @@ Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/bin/Debug/*
 Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/obj/Debug/*
 Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/bin/*
 Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/obj/*
+TestApp/*
