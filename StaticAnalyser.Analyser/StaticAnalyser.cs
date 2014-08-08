@@ -35,7 +35,7 @@ namespace StaticAnalysis
     {
       AnalysisResults results = new AnalysisResults();
       MSBuildWorkspace workspace = MSBuildWorkspace.Create();
-      Solution solution = workspace.OpenSolutionAsync(options.SolutionFile).Result;
+      Solution solution = await workspace.OpenSolutionAsync(options.SolutionFile);
 
       await Task.WhenAll(solution.Projects.Select(proj => AnalyseProjectAsync(proj, results, options)));
       return results;

@@ -29,3 +29,7 @@ Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/obj/*
 TestApp/*
 Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/bin/*
 Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/obj/*
+Rules/Performance/UnusedParametersRule/bin/*
+Rules/Performance/UnusedParametersRule/obj/*
+Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/bin/Debug/*
+Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/obj/*
