@@ -11,7 +11,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Linq;
 
-namespace UnitTests.BadPractice.AvoidVisibleConstants
+namespace UnitTests.BadPractice
 {
   [TestClass]
   public class TestAvoidVisibleConstants

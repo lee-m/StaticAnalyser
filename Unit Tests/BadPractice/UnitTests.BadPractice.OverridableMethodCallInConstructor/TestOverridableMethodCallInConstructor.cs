@@ -11,7 +11,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Linq;
 
-namespace UnitTests.BadPractice.TestOverridableMethodCallInConstructor
+namespace UnitTests.BadPractice
 {
   [TestClass]
   public class TestOverridableMethodCallInConstructor
