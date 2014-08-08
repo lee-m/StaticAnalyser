@@ -10,7 +10,7 @@ using System.Linq;
 namespace StaticAnalysis.Rules.BadPractice
 {
   [Export(typeof(AnalysisRuleBase))]
-  public class OverridableMethodCallInConstructorRule : TypeAnalysisRule
+  public class OverridableMethodCallInConstructor : TypeAnalysisRule
   {
     public override void AnalyseTypeDeclaration(TypeBlockSyntax node, AnalysisContext context, SemanticModel model)
     {

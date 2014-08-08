@@ -11,22 +11,22 @@ using System;
 using System.CodeDom.Compiler;
 using System.Linq;
 
-namespace UnitTests.BadPractice
+namespace StaticAnalyser.UnitTests.BadPractice
 {
   [TestClass]
-  public class TestVB6ReturnRule
+  public class TestAvoidVisibleConstants
   {
     [TestMethod]
-    public void TestVB6ReturnRuleProducesExpectedWarnings()
+    public void TestVisibleConstantsRuleProducesExpectedWarnings()
     {
       SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
       @"Public Class Class1
 
-          Public Function Test() As Integer
-              Test = 42
-          End Function
+          Public Const Foo = 42, Bar = 56
+          Public Shared ReadOnly Baz As Integer = 42
+          Private Const Asd = 57
 
-        End Class", "TestFile.vb");
+      End Class", "TestFile.vb");
 
       Compilation comp = VisualBasicCompilation.Create("Test")
                          .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
@@ -34,26 +34,23 @@ namespace UnitTests.BadPractice
       SemanticModel model = comp.GetSemanticModel(syntaxTree);
       AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
 
-      VB6ReturnRule rule = new VB6ReturnRule();
+      VisibleConstantFieldRule rule = new VisibleConstantFieldRule();
       rule.ExecuteRuleAsync(context).Wait();
 
       var messages = context.AnalysisResults.Messages.ToList();
-      Assert.AreEqual(1, messages.Count);
-      Assert.AreEqual("TestFile.vb:4 - Avoid use of VB6 style return statements.", messages[0].ToString());
+      Assert.AreEqual(2, messages.Count);
+      Assert.AreEqual("TestFile.vb:3 - 'Public Const' field 'Foo' in type 'Class1' should be declared as 'Shared ReadOnly' instead.", messages[0].ToString());
+      Assert.AreEqual("TestFile.vb:3 - 'Public Const' field 'Bar' in type 'Class1' should be declared as 'Shared ReadOnly' instead.", messages[1].ToString());
     }
 
     [TestMethod()]
-    public void TestVB6ReturnRuleIgnoresGeneratedCodeOnMethodWhenIGCOptionSet()
+    public void TestVisibleConstantsRuleIgnoresGeneratedCodeWhenIGCOptionSet()
     {
       SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
-      @"Public Class Class1
-
-            <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
-            Public Function Test() As Integer
-                Test = 42
-            End Function
-
-        End Class", "TestFile.vb");
+      @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
+       Public Class Class1
+          Public Const Foo = 42, Bar = 56
+      End Class", "TestFile.vb");
 
       Compilation comp = VisualBasicCompilation.Create("Test")
                          .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
@@ -64,7 +61,7 @@ namespace UnitTests.BadPractice
                                                     new AnalysisResults(),
                                                     comp);
 
-      VB6ReturnRule rule = new VB6ReturnRule();
+      VisibleConstantFieldRule rule = new VisibleConstantFieldRule();
       rule.ExecuteRuleAsync(context).Wait();
 
       var messages = context.AnalysisResults.Messages.ToList();
@@ -72,17 +69,13 @@ namespace UnitTests.BadPractice
     }
 
     [TestMethod()]
-    public void TestVB6ReturnRuleDoesNotIgnoreGeneratedCodeOnMethodWhenIGCOptionNotSet()
+    public void TestVisibleConstantsRuleDoesNoIgnoresGeneratedCodeWhenIGCOptionNotSet()
     {
       SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
-      @"Public Class Class1
-
-            <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
-            Public Function Test() As Integer
-                Test = 42
-            End Function
-
-        End Class", "TestFile.vb");
+      @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
+       Public Class Class1
+          Public Const Foo = 42, Bar = 56
+      End Class", "TestFile.vb");
 
       Compilation comp = VisualBasicCompilation.Create("Test")
                          .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
@@ -93,12 +86,13 @@ namespace UnitTests.BadPractice
                                                     new AnalysisResults(),
                                                     comp);
 
-      VB6ReturnRule rule = new VB6ReturnRule();
+      VisibleConstantFieldRule rule = new VisibleConstantFieldRule();
       rule.ExecuteRuleAsync(context).Wait();
 
       var messages = context.AnalysisResults.Messages.ToList();
-      Assert.AreEqual(1, messages.Count);
-      Assert.AreEqual("TestFile.vb:5 - Avoid use of VB6 style return statements.", messages[0].ToString());
+      Assert.AreEqual(2, messages.Count);
+      Assert.AreEqual("TestFile.vb:3 - 'Public Const' field 'Foo' in type 'Class1' should be declared as 'Shared ReadOnly' instead.", messages[0].ToString());
+      Assert.AreEqual("TestFile.vb:3 - 'Public Const' field 'Bar' in type 'Class1' should be declared as 'Shared ReadOnly' instead.", messages[1].ToString());
     }
   }
 }

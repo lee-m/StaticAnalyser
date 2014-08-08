@@ -11,7 +11,7 @@ using System.Linq;
 namespace StaticAnalysis.Rules.BadPractice
 {
   [Export(typeof(AnalysisRuleBase))]
-  public class AvoidVisibleConstantFieldRule : TypeAnalysisRule
+  public class VisibleConstantFieldRule : TypeAnalysisRule
   {
     public override void AnalyseTypeDeclaration(TypeBlockSyntax node, AnalysisContext context, SemanticModel model)
     {

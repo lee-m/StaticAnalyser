@@ -9,7 +9,7 @@ using System.Linq;
 namespace StaticAnalysis.Rules.BadPractice
 {
   [Export(typeof(AnalysisRuleBase))]
-  public class VB6ReturnRule : MethodBlockAnalysisRule
+  public class VB6StyleReturnRule : MethodBlockAnalysisRule
   {
     public override void AnalyseMethod(MethodBlockSyntax methodBlock, AnalysisContext context, SemanticModel model)
     {

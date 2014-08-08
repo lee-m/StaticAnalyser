@@ -11,7 +11,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Linq;
 
-namespace UnitTests.BadPractice
+namespace StaticAnalyser.UnitTests.BadPractice
 {
   [TestClass]
   public class TestOverridableMethodCallInConstructor
@@ -41,7 +41,7 @@ namespace UnitTests.BadPractice
       SemanticModel model = comp.GetSemanticModel(syntaxTree);
       AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
 
-      OverridableMethodCallInConstructorRule rule = new OverridableMethodCallInConstructorRule();
+      OverridableMethodCallInConstructor rule = new OverridableMethodCallInConstructor();
       rule.ExecuteRuleAsync(context).Wait();
 
       var messages = context.AnalysisResults.Messages.ToList();
@@ -76,7 +76,7 @@ namespace UnitTests.BadPractice
       SemanticModel model = comp.GetSemanticModel(syntaxTree);
       AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true }, new AnalysisResults(), comp);
 
-      OverridableMethodCallInConstructorRule rule = new OverridableMethodCallInConstructorRule();
+      OverridableMethodCallInConstructor rule = new OverridableMethodCallInConstructor();
       rule.ExecuteRuleAsync(context).Wait();
 
       var messages = context.AnalysisResults.Messages.ToList();
@@ -110,7 +110,7 @@ namespace UnitTests.BadPractice
       SemanticModel model = comp.GetSemanticModel(syntaxTree);
       AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
 
-      OverridableMethodCallInConstructorRule rule = new OverridableMethodCallInConstructorRule();
+      OverridableMethodCallInConstructor rule = new OverridableMethodCallInConstructor();
       rule.ExecuteRuleAsync(context).Wait();
 
       var messages = context.AnalysisResults.Messages.ToList();

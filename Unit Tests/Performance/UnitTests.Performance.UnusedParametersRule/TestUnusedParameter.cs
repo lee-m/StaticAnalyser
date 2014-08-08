@@ -11,10 +11,10 @@ using System;
 using System.CodeDom.Compiler;
 using System.Linq;
 
-namespace UnitTests.Performance
+namespace StaticAnalyser.UnitTests.Performance
 {
   [TestClass]
-  public class UnitTest1
+  public class TestUnusedParameter
   {
     [TestMethod]
     public void TestUnusedParametersRuleDoesNotWarnForEventParameters()

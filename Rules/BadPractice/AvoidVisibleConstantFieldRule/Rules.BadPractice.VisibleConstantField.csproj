@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{71322A05-1AD0-4A09-9DFD-4CB69A0BC4EA}</ProjectGuid>
+    <ProjectGuid>{C5DD04DD-CA2D-483D-9D33-9B1D2CF13434}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StaticAnalysis.Rules.BadPractice</RootNamespace>
-    <AssemblyName>StaticAnalysis.Rules.BadPractice.VB6ReturnRule</AssemblyName>
+    <AssemblyName>StaticAnalysis.Rules.BadPractice.VisibleConstantField</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
@@ -66,7 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VB6ReturnRule.cs" />
+    <Compile Include="VisibleConstantFieldRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

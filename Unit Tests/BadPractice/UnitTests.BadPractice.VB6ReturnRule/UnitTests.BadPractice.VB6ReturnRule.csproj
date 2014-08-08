@@ -6,7 +6,7 @@
     <ProjectGuid>{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StaticAnalyser.UnitTests.BadPractice.VB6ReturnRule</RootNamespace>
+    <RootNamespace>StaticAnalyser.UnitTests.BadPractice</RootNamespace>
     <AssemblyName>StaticAnalyser.UnitTests.BadPractice.VB6ReturnRule</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -76,13 +76,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="TestVB6ReturnRule.cs" />
+    <Compile Include="TestVB6StyleReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Rules\BadPractice\VB6ReturnRule\Rules.BadPractice.VB6ReturnRule.csproj">
+    <ProjectReference Include="..\..\..\Rules\BadPractice\VB6ReturnRule\Rules.BadPractice.VB6StyleReturn.csproj">
       <Project>{71322a05-1ad0-4a09-9dfd-4cb69a0bc4ea}</Project>
-      <Name>Rules.BadPractice.VB6ReturnRule</Name>
+      <Name>Rules.BadPractice.VB6StyleReturn</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\StaticAnalyser.Analyser\StaticAnalyser.Analyser.csproj">
       <Project>{5084eeb8-e7f5-4e2f-996f-f3ea5a5feb0f}</Project>
