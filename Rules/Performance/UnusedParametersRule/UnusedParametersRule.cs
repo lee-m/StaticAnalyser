@@ -16,12 +16,15 @@ namespace StaticAnalysis.Rules.Performance
   [Export(typeof(AnalysisRuleBase))]
   public class UnusedParametersRule : MethodBlockAnalysisRule
   {
-    //TODO: partial methods
     public override void AnalyseMethod(MethodBlockSyntax methodBlock, AnalysisContext context, SemanticModel model)
     {
       //Ignore partial methods as they don't have method bodies, we'll pick up the
       //atual body later on
       if (methodBlock.Begin.Modifiers.Any(modifier => modifier.VisualBasicKind() == SyntaxKind.PartialKeyword))
+        return;
+
+      //Ignore P/Invoke methods
+      if (AnalysisUtils.HasDllImportAttribte(methodBlock.Begin.AttributeLists, model))
         return;
 
       IMethodSymbol methodSymbol = model.GetDeclaredSymbol(methodBlock);

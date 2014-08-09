@@ -174,5 +174,55 @@ namespace StaticAnalyser.UnitTests.Performance
       Assert.AreEqual(1, messages.Count);
       Assert.AreEqual("TestFile.vb:10 - Parameter 'unusedParam' to method 'Test' is never referenced.", messages[0].ToString());
     }
+
+    [TestMethod()]
+    public void TestUnusedParametersIgnoresAbstractMethods()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      @"Public MustInherit Class Class1
+
+            Public MustOverride Sub Test(paramOne As String)
+
+        End Class", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
+
+      UnusedParametersRule rule = new UnusedParametersRule();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
+    }
+
+    [TestMethod]
+    public void TestUnusedParametersIgnoresPInvokeMethods()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      @"Public Class Class1
+
+            <System.Runtime.InteropServices.DllImport(""winmm.dll"")> _
+            Public Shared Function waveOutGetVolume(ByVal hwo As IntPtr, ByRef dwVolume As System.UInt32) As Integer
+            End Function
+
+        End Class", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
+
+      UnusedParametersRule rule = new UnusedParametersRule();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
+    }
   }
 }
