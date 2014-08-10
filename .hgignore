@@ -41,3 +41,7 @@ Rules/Design/EmptyInterface/bin/*
 Rules/Design/EmptyInterface/obj/*
 Unit Tests/Design/UnitTests.Design.EmptyInterface/bin/*
 Unit Tests/Design/UnitTests.Design.EmptyInterface/obj/*
+Rules/Design/TooManyTypeParameters/bin/*
+Rules/Design/TooManyTypeParameters/obj/*
+Unit Tests/Design/UnitTests.Design.TooManyTypeParameters/bin/*
+Unit Tests/Design/UnitTests.Design.TooManyTypeParameters/obj/*
