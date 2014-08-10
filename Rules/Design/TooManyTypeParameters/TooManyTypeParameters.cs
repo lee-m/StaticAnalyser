@@ -3,8 +3,11 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis;
 
+using System.ComponentModel.Composition;
+
 namespace StaticAnalysis.Rules.Design
 {
+  [Export(typeof(AnalysisRuleBase))]
   public class TooManyTypeParameters : TypeAnalysisRule
   {
     private const int MaxTypeParamters = 2;
