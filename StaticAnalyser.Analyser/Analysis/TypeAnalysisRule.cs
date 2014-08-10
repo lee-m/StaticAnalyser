@@ -43,10 +43,7 @@ namespace StaticAnalysis.Analysis
       /// <param name="node">The interface declaration to analyse.</param>
       public override void VisitInterfaceBlock(InterfaceBlockSyntax node)
       {
-        if (!IgnoreTypeDeclaration(node.Begin.AttributeLists))
-          Rule.AnalyseInterfaceDeclaration(node, Context, CurrentSemanticModel);
-
-        DefaultVisit(node);
+        VisitType(node);
       }
 
       /// <summary>
@@ -84,21 +81,11 @@ namespace StaticAnalysis.Analysis
     }
 
     /// <summary>
-    /// Analyses a class or structure declaration.
+    /// Analyses a class, structure or interface declaration.
     /// </summary>
     /// <param name="node">The type declaration to analyse</param>
-    public virtual void AnalyseTypeDeclaration(TypeBlockSyntax node,
+    public abstract void AnalyseTypeDeclaration(TypeBlockSyntax node,
                                                AnalysisContext context,
-                                               SemanticModel model)
-    { }
-
-    /// <summary>
-    /// Analyses an interface declaration.
-    /// </summary>
-    /// <param name="node">The type declaration to analyse</param>
-    public virtual void AnalyseInterfaceDeclaration(TypeBlockSyntax node,
-                                                    AnalysisContext context,
-                                                    SemanticModel model)
-    { }
+                                               SemanticModel model);
   }
 }

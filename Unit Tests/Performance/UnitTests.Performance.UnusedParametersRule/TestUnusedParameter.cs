@@ -257,5 +257,27 @@ namespace StaticAnalyser.UnitTests.Performance
       var messages = context.AnalysisResults.Messages.ToList();
       Assert.AreEqual(0, messages.Count);
     }
+
+    [TestMethod]
+    public void TestUnusedParametersIgnoresInterfaceMethods()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      @"Public Interface IFoo
+            Sub SomeFunc(paramOne As String, paramTwo As String)
+        End Interface", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
+
+      UnusedParametersRule rule = new UnusedParametersRule();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
+    }
   }
 }

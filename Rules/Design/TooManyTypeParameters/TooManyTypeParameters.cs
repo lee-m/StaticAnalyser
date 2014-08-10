@@ -14,17 +14,6 @@ namespace StaticAnalysis.Rules.Design
 
     public override void AnalyseTypeDeclaration(TypeBlockSyntax node, AnalysisContext context, SemanticModel model)
     {
-      AnalyseType(node, context, model);
-    }
-
-    public override void AnalyseInterfaceDeclaration(TypeBlockSyntax node, AnalysisContext context, SemanticModel model)
-    {
-      AnalyseType(node, context, model);
-    }
-
-    //TODO: combine this
-    private void AnalyseType(TypeBlockSyntax node, AnalysisContext context, SemanticModel model)
-    {
       INamedTypeSymbol typeSymbol = (INamedTypeSymbol)model.GetDeclaredSymbol(node);
 
       if (typeSymbol.TypeParameters.Length > MaxTypeParamters)

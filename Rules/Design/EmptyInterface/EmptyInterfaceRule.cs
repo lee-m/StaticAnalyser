@@ -11,13 +11,14 @@ namespace StaticAnalysis.Rules.Design
   [Export(typeof(AnalysisRuleBase))]
   public class EmptyInterfaceRule : TypeAnalysisRule
   {
-    public override void AnalyseInterfaceDeclaration(TypeBlockSyntax node, 
-                                                     AnalysisContext context, 
-                                                     SemanticModel model)
+    public override void AnalyseTypeDeclaration(TypeBlockSyntax node, 
+                                                AnalysisContext context, 
+                                                SemanticModel model)
     {
       INamedTypeSymbol typeSymbol = (INamedTypeSymbol)model.GetDeclaredSymbol(node);
 
-      if (!typeSymbol.MemberNames.Any())
+      if (!typeSymbol.MemberNames.Any()
+          && typeSymbol.TypeKind == TypeKind.Interface)
         context.AnalysisResults.AddWarning(node.GetLocation(),
                                            "Interface '{0}' has no members.",
                                            node.Begin.Identifier.Text);
