@@ -69,7 +69,7 @@ namespace StaticAnalyser.UnitTests.BadPractice
     }
 
     [TestMethod()]
-    public void TestVisibleConstantsRuleDoesNoIgnoresGeneratedCodeWhenIGCOptionNotSet()
+    public void TestVisibleConstantsRuleDoesNotIgnoresGeneratedCodeWhenIGCOptionNotSet()
     {
       SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
       @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>

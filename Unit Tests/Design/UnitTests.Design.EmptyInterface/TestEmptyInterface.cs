@@ -62,7 +62,7 @@ namespace StaticAnalyser.UnitTests.Design
     }
 
     [TestMethod()]
-    public void TestEmptyInterfaceRuleDoesNoIgnoresGeneratedCodeWhenIGCOptionNotSet()
+    public void TestEmptyInterfaceRuleDoesNotIgnoresGeneratedCodeWhenIGCOptionNotSet()
     {
       SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
       @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
@@ -84,6 +84,29 @@ namespace StaticAnalyser.UnitTests.Design
       var messages = context.AnalysisResults.Messages.ToList();
       Assert.AreEqual(1, messages.Count);
       Assert.AreEqual("TestFile.vb:1 - Interface 'IFoo' has no members.", messages[0].ToString());
+    }
+
+    [TestMethod()]
+    public void TestEmptyInterfaceRuleDoesNotWarnForEmptyClasses()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      @"Public Class IFoo
+        End Class", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false },
+                                                    new AnalysisResults(),
+                                                    comp);
+
+      EmptyInterfaceRule rule = new EmptyInterfaceRule();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
     }
   }
 }
