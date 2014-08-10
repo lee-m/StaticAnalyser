@@ -37,17 +37,40 @@ namespace StaticAnalysis.Analysis
         VisitType(node);
       }
 
+      /// <summary>
+      /// Invokes the bound rule for an interface declaration.
+      /// </summary>
+      /// <param name="node">The interface declaration to analyse.</param>
+      public override void VisitInterfaceBlock(InterfaceBlockSyntax node)
+      {
+        if (!IgnoreTypeDeclaration(node.Begin.AttributeLists))
+          Rule.AnalyseInterfaceDeclaration(node, Context, CurrentSemanticModel);
+
+        DefaultVisit(node);
+      }
+
+      /// <summary>
+      /// Optionally executes the rule on a class or structure declaration.
+      /// </summary>
+      /// <param name="node">The type to analyse.</param>
       private void VisitType(TypeBlockSyntax node)
       {
-        //Ignore compiler generated classes if needed
-        bool ignoreType = Context.Options.IgnoreGeneratedCode
-                          ? AnalysisUtils.HasGeneratedCodeAttribute(node.Begin.AttributeLists, CurrentSemanticModel)
-                          : false;
-
-        if (!ignoreType)
+        if (!IgnoreTypeDeclaration(node.Begin.AttributeLists))
           Rule.AnalyseTypeDeclaration(node, Context, CurrentSemanticModel);
 
         DefaultVisit(node);
+      }
+
+      /// <summary>
+      /// Determines whether a given type declaration should be ignored for analysis purposes or not.
+      /// </summary>
+      /// <param name="attributes">Set of attributes applied to the type.</param>
+      /// <returns></returns>
+      private bool IgnoreTypeDeclaration(SyntaxList<AttributeListSyntax> attributes)
+      {
+        return Context.Options.IgnoreGeneratedCode
+               ? AnalysisUtils.HasGeneratedCodeAttribute(attributes, CurrentSemanticModel)
+               : false;
       }
     }
 
@@ -61,11 +84,21 @@ namespace StaticAnalysis.Analysis
     }
 
     /// <summary>
-    /// Analyses a class statement.
+    /// Analyses a class or structure declaration.
     /// </summary>
     /// <param name="node">The type declaration to analyse</param>
-    public abstract void AnalyseTypeDeclaration(TypeBlockSyntax node,
-                                                AnalysisContext context,
-                                                SemanticModel model);
+    public virtual void AnalyseTypeDeclaration(TypeBlockSyntax node,
+                                               AnalysisContext context,
+                                               SemanticModel model)
+    { }
+
+    /// <summary>
+    /// Analyses an interface declaration.
+    /// </summary>
+    /// <param name="node">The type declaration to analyse</param>
+    public virtual void AnalyseInterfaceDeclaration(TypeBlockSyntax node,
+                                                    AnalysisContext context,
+                                                    SemanticModel model)
+    { }
   }
 }

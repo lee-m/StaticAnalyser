@@ -3,18 +3,22 @@ syntax: glob
 *.suo
 pageant.lnk
 Rules.txt
-Rules/Correctness/EmptyCatchBlockRule/bin/*
-Rules/Correctness/EmptyCatchBlockRule/obj/*
-Rules/Performance/EmptyFinaliserRule/bin/*
-Rules/Performance/EmptyFinaliserRule/obj/*
-Rules/Performance/UnusedPrivateFieldsRule/bin/*
-Rules/Performance/UnusedPrivateFieldsRule/obj/*
 Rules/BadPractice/VB6ReturnRule/bin/*
 Rules/BadPractice/VB6ReturnRule/obj/*
 Rules/BadPractice/OverridableMethodCallInConstructorRule/bin/*
 Rules/BadPractice/OverridableMethodCallInConstructorRule/obj/*
 Rules/BadPractice/AvoidVisibleConstantFieldRule/bin/*
 Rules/BadPractice/AvoidVisibleConstantFieldRule/obj/*
+Rules/Correctness/EmptyCatchBlockRule/bin/*
+Rules/Correctness/EmptyCatchBlockRule/obj/*
+Rules/Design/AbstractTypeWithPublicCtor/bin/*
+Rules/Design/AbstractTypeWithPublicCtor/obj/*
+Rules/Performance/EmptyFinaliserRule/bin/*
+Rules/Performance/EmptyFinaliserRule/obj/*
+Rules/Performance/UnusedParametersRule/bin/*
+Rules/Performance/UnusedParametersRule/obj/*
+Rules/Performance/UnusedPrivateFieldsRule/bin/*
+Rules/Performance/UnusedPrivateFieldsRule/obj/*
 StaticAnalyser/bin/*
 StaticAnalyser/obj/*
 StaticAnalyser.Analyser/bin/*
@@ -22,14 +26,18 @@ StaticAnalyser.Analyser/obj/*
 TestApp/TestApp/bin/*
 TestApp/TestApp/obj/*
 TestResults/*
+TestApp/*
 Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/bin/Debug/*
 Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/obj/Debug/*
 Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/bin/*
 Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/obj/*
-TestApp/*
 Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/bin/*
 Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/obj/*
-Rules/Performance/UnusedParametersRule/bin/*
-Rules/Performance/UnusedParametersRule/obj/*
+Unit Tests/Design/UnitTests.Design.AbstractTypeWithPublicCtor/bin/*
+Unit Tests/Design/UnitTests.Design.AbstractTypeWithPublicCtor/obj/*
 Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/bin/Debug/*
 Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/obj/*
+Rules/Design/EmptyInterface/bin/*
+Rules/Design/EmptyInterface/obj/*
+Unit Tests/Design/UnitTests.Design.EmptyInterface/bin/*
+Unit Tests/Design/UnitTests.Design.EmptyInterface/obj/*
