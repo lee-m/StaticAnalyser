@@ -19,8 +19,12 @@ namespace StaticAnalysis.Rules.Performance
     public override void AnalyseMethod(MethodBlockSyntax methodBlock, AnalysisContext context, SemanticModel model)
     {
       //Ignore partial methods as they don't have method bodies, we'll pick up the
-      //atual body later on
-      if (methodBlock.Begin.Modifiers.Any(modifier => modifier.VisualBasicKind() == SyntaxKind.PartialKeyword))
+      //atual body later on. Also ignore any method declared Overridable or Overrides
+      HashSet<SyntaxKind> ignoredModifiers;
+      ignoredModifiers = new HashSet<SyntaxKind>(new SyntaxKind[]{SyntaxKind.OverridableKeyword,
+                                                                  SyntaxKind.OverridesKeyword,
+                                                                  SyntaxKind.PartialKeyword});
+      if (methodBlock.Begin.Modifiers.Any(modifier => ignoredModifiers.Contains(modifier.VisualBasicKind())))
         return;
 
       //Ignore P/Invoke methods

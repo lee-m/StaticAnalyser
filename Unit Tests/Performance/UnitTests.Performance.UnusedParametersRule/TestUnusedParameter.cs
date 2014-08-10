@@ -224,5 +224,38 @@ namespace StaticAnalyser.UnitTests.Performance
       var messages = context.AnalysisResults.Messages.ToList();
       Assert.AreEqual(0, messages.Count);
     }
+
+    [TestMethod]
+    public void TestUnusedParametersIgnoresOverridableAndOverridesMethods()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      @"Public Class Foo
+
+            Public Overridable Sub SomeMethod(paramOne As String)
+            End Sub
+
+        End Class
+
+        Public Class Bar
+            Inherits Foo
+
+            Public Overrides Sub SomeMethod(paramOne As String)
+            End Sub
+
+        End Class", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
+
+      UnusedParametersRule rule = new UnusedParametersRule();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
+    }
   }
 }
