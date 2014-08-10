@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis;
-using StaticAnalysis.Analysis.Utils;
 
 using System.ComponentModel.Composition;
 using System.Linq;

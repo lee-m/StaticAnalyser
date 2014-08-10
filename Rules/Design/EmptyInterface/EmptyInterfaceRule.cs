@@ -11,8 +11,8 @@ namespace StaticAnalysis.Rules.Design
   [Export(typeof(AnalysisRuleBase))]
   public class EmptyInterfaceRule : TypeAnalysisRule
   {
-    public override void AnalyseTypeDeclaration(TypeBlockSyntax node, 
-                                                AnalysisContext context, 
+    public override void AnalyseTypeDeclaration(TypeBlockSyntax node,
+                                                AnalysisContext context,
                                                 SemanticModel model)
     {
       INamedTypeSymbol typeSymbol = (INamedTypeSymbol)model.GetDeclaredSymbol(node);

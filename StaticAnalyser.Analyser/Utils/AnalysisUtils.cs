@@ -1,10 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-
-using System.Linq;
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace StaticAnalysis.Analysis.Utils
@@ -12,7 +10,7 @@ namespace StaticAnalysis.Analysis.Utils
   public static class AnalysisUtils
   {
     /// <summary>
-    /// Determines if any attribute in a list of attributes applied to a symbol represents a generated 
+    /// Determines if any attribute in a list of attributes applied to a symbol represents a generated
     /// code attibute.
     /// </summary>
     /// <param name="attributes">List of attributes to check.</param>
@@ -51,7 +49,7 @@ namespace StaticAnalysis.Analysis.Utils
     /// <param name="model">Semantic model to use for looking up symbol info.</param>
     /// <param name="searhAttribute">The attribute to look for.</param>
     /// <returns></returns>
-    private static bool AttributeListContainsAttribute(SyntaxList<AttributeListSyntax> attributes, 
+    private static bool AttributeListContainsAttribute(SyntaxList<AttributeListSyntax> attributes,
                                                        SemanticModel model,
                                                        string searhAttribute)
     {

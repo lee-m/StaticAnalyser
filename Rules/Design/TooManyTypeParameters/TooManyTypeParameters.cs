@@ -3,9 +3,6 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis;
 
-using System.ComponentModel.Composition;
-using System.Linq;
-
 namespace StaticAnalysis.Rules.Design
 {
   public class TooManyTypeParameters : TypeAnalysisRule

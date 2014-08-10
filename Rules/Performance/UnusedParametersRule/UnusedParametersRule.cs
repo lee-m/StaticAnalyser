@@ -5,11 +5,9 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using StaticAnalysis.Analysis;
 using StaticAnalysis.Analysis.Utils;
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace StaticAnalysis.Rules.Performance
 {
@@ -32,7 +30,7 @@ namespace StaticAnalysis.Rules.Performance
         return;
 
       IMethodSymbol methodSymbol = model.GetDeclaredSymbol(methodBlock);
-      
+
       //It's not unusual for parameters on an event handler to be unused so build up a list
       //of parameters of any events handled by this method so we don't warn about them.
       HashSet<string> eventParamNames = new HashSet<string>();
@@ -62,7 +60,7 @@ namespace StaticAnalysis.Rules.Performance
 
       foreach (IParameterSymbol param in methodSymbol.Parameters)
       {
-        if(!eventParamNames.Contains(param.Name))
+        if (!eventParamNames.Contains(param.Name))
           parameters.Add(param, false);
       }
 

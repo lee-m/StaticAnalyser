@@ -83,7 +83,7 @@ namespace StaticAnalyser.UnitTests.BadPractice
       Assert.AreEqual(0, messages.Count);
     }
 
-     [TestMethod()]
+    [TestMethod()]
     public void TestAvoidOverridableMethodCallsInConstructorDoesNotIgnoreGeneratedCodeOnMethodWhenIGCOptionNotSet()
     {
       SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(

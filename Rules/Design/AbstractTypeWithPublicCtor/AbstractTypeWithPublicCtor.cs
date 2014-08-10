@@ -22,9 +22,9 @@ namespace StaticAnalysis.Rules.Design
       if (!typeSymbol.Constructors.Any())
         return;
 
-      foreach(IMethodSymbol construtorSymbol in typeSymbol.Constructors)
+      foreach (IMethodSymbol construtorSymbol in typeSymbol.Constructors)
       {
-        if(construtorSymbol.DeclaredAccessibility == Accessibility.Public)
+        if (construtorSymbol.DeclaredAccessibility == Accessibility.Public)
         {
           //No point in warning multiple times
           context.AnalysisResults.AddWarning(node.GetLocation(),
