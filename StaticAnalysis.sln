@@ -44,7 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Performance", "Performance"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.BadPractice.VisibleConstantField", "Unit Tests\BadPractice\UnitTests.BadPractice.AvoidVisibleConstants\UnitTests.BadPractice.VisibleConstantField.csproj", "{8A03166B-35EF-41E2-83EC-9A9ACCDB5693}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.BadPractice.VB6ReturnRule", "Unit Tests\BadPractice\UnitTests.BadPractice.VB6ReturnRule\UnitTests.BadPractice.VB6ReturnRule.csproj", "{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.BadPractice.VB6StyleReturn", "Unit Tests\BadPractice\UnitTests.BadPractice.VB6ReturnRule\UnitTests.BadPractice.VB6StyleReturn.csproj", "{AEBC0ACB-5A4F-42F9-9EE1-4C9A96AAF3EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.BadPractice.OverridableMethodCallInConstructor", "Unit Tests\BadPractice\UnitTests.BadPractice.OverridableMethodCallInConstructor\UnitTests.BadPractice.OverridableMethodCallInConstructor.csproj", "{1CB7B72C-50AE-4A91-BE27-B53C5EA87C28}"
 EndProject
