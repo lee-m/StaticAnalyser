@@ -117,5 +117,34 @@ namespace StaticAnalyser.UnitTests.BadPractice
       Assert.AreEqual(1, messages.Count);
       Assert.AreEqual("TestFile.vb:4 - Avoid calling Overridable method 'OverridableMethod' within constructor of type 'Class1'.", messages[0].ToString());
     }
+    [TestMethod()]
+    public void TestAvoidOverridableMethodCallsInConstructorHandlesLateBoundMethodCall()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+     @"Option Strict Off
+
+       Public Class Test
+  
+          Public Sub New()
+
+              Dim a As New Object
+              a.SomeLateBoundMethod()
+
+          End Sub
+
+       End Class", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true }, new AnalysisResults(), comp);
+
+      OverridableMethodCallInConstructor rule = new OverridableMethodCallInConstructor();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
+    }
   }
 }
