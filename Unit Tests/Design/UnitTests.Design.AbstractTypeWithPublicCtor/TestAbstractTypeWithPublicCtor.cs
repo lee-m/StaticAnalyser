@@ -173,5 +173,49 @@ namespace StaticAnalyser.UnitTests.Design
       var messages = context.AnalysisResults.Messages.ToList();
       Assert.AreEqual(0, messages.Count);
     }
+
+    [TestMethod]
+    public void TestAbstractTypeWithPublicCtorRuleDoesNotWarnForNonAbstractTypes()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      @"Public Class Foo
+
+          Public Sub New()
+          End Sub
+
+        End Class", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
+
+      AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
+    }
+
+    [TestMethod]
+    public void TestAbstractTypeWithPublicCtorRuleDoesNotWarnForAbstractTypeWithNoCtors()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      @"Public MustInherit Class Foo
+        End Class", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
+
+      AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
+    }
   }
 }
