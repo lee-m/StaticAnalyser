@@ -45,3 +45,8 @@ Rules/Design/TooManyTypeParameters/bin/*
 Rules/Design/TooManyTypeParameters/obj/*
 Unit Tests/Design/UnitTests.Design.TooManyTypeParameters/bin/*
 Unit Tests/Design/UnitTests.Design.TooManyTypeParameters/obj/*
+Gendarme/*
+Rules/Performance/UnsealedAttribute/bin/*
+Rules/Performance/UnsealedAttribute/obj/*
+UnitTests.Performance.UnsealedAttribute/bin/*
+UnitTests.Performance.UnsealedAttribute/obj/*
