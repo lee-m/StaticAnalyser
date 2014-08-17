@@ -42,13 +42,35 @@ namespace StaticAnalysis.Rules.Performance
           var sym = model.GetSymbolInfo(handlesCause.EventMember);
 
           if (sym.Symbol != null)
-          {
-            var members = ((IEventSymbol)sym.Symbol).Type.GetMembers(WellKnownMemberNames.DelegateInvokeName);
+            UpdateEventParameterNames((IEventSymbol)sym.Symbol, eventParamNames);
+        }
+      }
+      else
+      {
+        //See if this method is an event handler that's registered via AddHandler
+        var addHandlerCalls = ((TypeBlockSyntax)methodBlock.Parent).DescendantNodes().OfType<AddRemoveHandlerStatementSyntax>();
 
-            if (members.Length == 1)
+        foreach(var addHandler in addHandlerCalls)
+        {
+          if (addHandler.AddHandlerOrRemoveHandlerKeyword.VisualBasicKind() == SyntaxKind.RemoveHandlerKeyword)
+            continue;
+
+          //Only interested in AddHandler event, AddressOf func so we can see if the method whose
+          //address is being taken is this one
+          UnaryExpressionSyntax exp = addHandler.DelegateExpression as UnaryExpressionSyntax;
+
+          if (exp == null)
+            continue;
+
+          SymbolInfo handlerSym = model.GetSymbolInfo(exp.Operand);
+
+          if (handlerSym.Symbol != null)
+          {
+            //See if the method being registered is this one
+            if((IMethodSymbol)handlerSym.Symbol == methodSymbol)
             {
-              foreach (IParameterSymbol param in ((IMethodSymbol)members.First()).Parameters)
-                eventParamNames.Add(param.Name);
+              foreach (IParameterSymbol paramName in methodSymbol.Parameters)
+                eventParamNames.Add(paramName.Name);
             }
           }
         }
@@ -85,6 +107,17 @@ namespace StaticAnalysis.Rules.Performance
         context.AnalysisResults.AddWarning(methodBlock.GetLocation(),
                                            "Parameter '{0}' to method '{1}' is never referenced.",
                                            unusedParam.Key.Name, methodSymbol.Name);
+      }
+    }
+
+    private void UpdateEventParameterNames(IEventSymbol eventSym, HashSet<string> eventParamNames)
+    {
+      var members = eventSym.Type.GetMembers(WellKnownMemberNames.DelegateInvokeName);
+
+      if (members.Length == 1)
+      {
+        foreach (IParameterSymbol param in ((IMethodSymbol)members.First()).Parameters)
+          eventParamNames.Add(param.Name);
       }
     }
   }

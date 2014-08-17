@@ -279,5 +279,88 @@ namespace StaticAnalyser.UnitTests.Performance
       var messages = context.AnalysisResults.Messages.ToList();
       Assert.AreEqual(0, messages.Count);
     }
+
+    [TestMethod]
+    public void TestUnusedParametersRuleDoesNotWarnForEventHandlersAddedViaAddHandler()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      @"Imports System
+
+        Public Class Class1
+
+            Public Class SomeEventArgs
+                Inherits EventArgs
+
+            End Class
+
+            Public Event SomeEvent(paramOne As String, paramTwo As String, paramThree As String)
+            Public Event SomeOtherEvent As EventHandler(Of SomeEventArgs)
+
+        End Class
+
+        Public Class Class2
+            Inherits Class1
+
+            Public Sub New()
+                AddHandler SomeEvent, AddressOf Class2_SomeEvent
+                AddHandler SomeOtherEvent, AddressOf Class2_SomeOtherEvent
+            End Sub
+
+            Private Sub Class2_SomeEvent(paramOne As String, paramTwo As String, paramThree As String)
+
+            End Sub
+
+            Private Sub Class2_SomeOtherEvent(sender As Object, e As Class1.SomeEventArgs)
+
+            End Sub
+
+        End Class", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
+
+      UnusedParametersRule rule = new UnusedParametersRule();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
+    }
+
+    [TestMethod]
+    public void TestUnusedParametersRuleIgnoresAddHandlerWithNoAddressOf()
+    {
+      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      @"Imports System
+
+        Public Class Class1
+
+            Public Class SomeEventArgs
+                Inherits EventArgs
+
+            End Class
+
+            Public Event SomeOtherEvent As EventHandler(Of SomeEventArgs)
+
+            Public Sub AddValueChangedHandler(handler As EventHandler(Of SomeEventArgs))
+                AddHandler SomeOtherEvent, handler
+            End Sub
+
+        End Class", "TestFile.vb");
+
+      Compilation comp = VisualBasicCompilation.Create("Test")
+                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
+                         .AddSyntaxTrees(syntaxTree);
+      SemanticModel model = comp.GetSemanticModel(syntaxTree);
+      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
+
+      UnusedParametersRule rule = new UnusedParametersRule();
+      rule.ExecuteRuleAsync(context).Wait();
+
+      var messages = context.AnalysisResults.Messages.ToList();
+      Assert.AreEqual(0, messages.Count);
+    }
   }
 }
