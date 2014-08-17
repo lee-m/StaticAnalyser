@@ -70,7 +70,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.Design.TooManyTyp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rules.Performance.UnsealedAttribute", "Rules\Performance\UnsealedAttribute\Rules.Performance.UnsealedAttribute.csproj", "{400FC764-DCB3-439C-AC8D-10096662D91A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.Performance.UnsealedAttribute", "UnitTests.Performance.UnsealedAttribute\UnitTests.Performance.UnsealedAttribute.csproj", "{D84AE64B-0FD8-4698-AFDF-10098EC780B8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{15B72ADA-C871-4EF2-B753-8436F8DE690A}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.Performance.UnsealedAttribute", "Unit Tests\Performance\UnitTests.Performance.UnsealedAttribute\UnitTests.Performance.UnsealedAttribute.csproj", "{D84AE64B-0FD8-4698-AFDF-10098EC780B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

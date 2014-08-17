@@ -83,11 +83,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Rules\Performance\UnsealedAttribute\Rules.Performance.UnsealedAttribute.csproj">
+    <ProjectReference Include="..\..\..\Rules\Performance\UnsealedAttribute\Rules.Performance.UnsealedAttribute.csproj">
       <Project>{400fc764-dcb3-439c-ac8d-10096662d91a}</Project>
       <Name>Rules.Performance.UnsealedAttribute</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StaticAnalyser.Analyser\StaticAnalyser.Analyser.csproj">
+    <ProjectReference Include="..\..\..\StaticAnalyser.Analyser\StaticAnalyser.Analyser.csproj">
       <Project>{5084eeb8-e7f5-4e2f-996f-f3ea5a5feb0f}</Project>
       <Name>StaticAnalyser.Analyser</Name>
     </ProjectReference>
