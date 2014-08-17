@@ -53,7 +53,7 @@ namespace StaticAnalysis.Analysis
     /// <param name="outputWriter">Output for the warnings.</param>
     public void OutputResults(TextWriter outputWriter)
     {
-      var orderedResults = mResults.OrderBy(r => r.SourceFile);
+      var orderedResults = mResults.OrderBy(r => r.SourceFile).ThenBy(r => r.LineNumber);
 
       foreach (var result in orderedResults)
         outputWriter.WriteLine(result.ToString());
