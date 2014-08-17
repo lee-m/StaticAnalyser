@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using System.Threading.Tasks;
 
@@ -15,19 +16,15 @@ namespace StaticAnalysis.Analysis
     /// <param name="compilationUnit">The compilation unit to analyse.</param>
     public virtual async Task ExecuteRuleAsync(AnalysisContext context)
     {
-      AnalysisSyntaxWalker walker = CreateSyntaxWalker(context);
-
       foreach (var tree in context.CurrentCompilation.SyntaxTrees)
       {
         SemanticModel model = context.CurrentCompilation.GetSemanticModel(tree);
-        walker.WalkSyntaxTree(await tree.GetRootAsync(), model);
+        AnalyseCompilationUnit((CompilationUnitSyntax)await tree.GetRootAsync(), model, context);
       }
     }
 
-    /// <summary>
-    /// Factory method to create a syntax walker specific to this type of rule
-    /// </summary>
-    /// <returns></returns>
-    protected abstract AnalysisSyntaxWalker CreateSyntaxWalker(AnalysisContext context);
+    protected abstract void AnalyseCompilationUnit(CompilationUnitSyntax compilationUnit, 
+                                                   SemanticModel model,
+                                                   AnalysisContext context);
   }
 }

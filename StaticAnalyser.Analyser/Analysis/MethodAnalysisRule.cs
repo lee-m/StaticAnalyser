@@ -3,6 +3,8 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis.Utils;
 
+using System.Linq;
+
 namespace StaticAnalysis.Analysis
 {
   /// <summary>
@@ -10,40 +12,20 @@ namespace StaticAnalysis.Analysis
   /// </summary>
   public abstract class MethodBlockAnalysisRule : AnalysisRuleBase
   {
-    /// <summary>
-    /// Syntax walker which only visits method blocks.
-    /// </summary>
-    private class MethodBlockSyntaxWalker : TypedAnalysisSyntaxWalker<MethodBlockAnalysisRule>
+    protected override void AnalyseCompilationUnit(CompilationUnitSyntax compilationUnit,
+                                                   SemanticModel model,
+                                                   AnalysisContext context)
     {
-      /// <summary>
-      /// Initialise a new instance bound to the specified rule.
-      /// </summary>
-      /// <param name="rule">The rule to invoke for each method found.</param>
-      public MethodBlockSyntaxWalker(MethodBlockAnalysisRule rule, AnalysisContext context)
-        : base(rule, context)
-      { }
+      var methods = compilationUnit.DescendantNodes().OfType<MethodBlockSyntax>();
 
-      /// <summary>
-      /// Invokes the bound rule for a method statement.
-      /// </summary>
-      /// <param name="node">The method to analyse.</param>
-      public override void VisitMethodBlock(MethodBlockSyntax node)
+      foreach (var method in methods)
       {
-        if (Context.Options.IgnoreGeneratedCode
-            && AnalysisUtils.HasGeneratedCodeAttribute(node.Begin.AttributeLists, CurrentSemanticModel))
-          return;
+        if (context.Options.IgnoreGeneratedCode
+            && AnalysisUtils.HasGeneratedCodeAttribute(method.Begin.AttributeLists, model))
+          continue;
 
-        Rule.AnalyseMethod(node, Context, CurrentSemanticModel);
+        AnalyseMethod(method, context, model);
       }
-    }
-
-    /// <summary>
-    /// Factory method to create a syntax walker specific to this type of rule
-    /// </summary>
-    /// <returns></returns>
-    protected override AnalysisSyntaxWalker CreateSyntaxWalker(AnalysisContext context)
-    {
-      return new MethodBlockSyntaxWalker(this, context);
     }
 
     /// <summary>

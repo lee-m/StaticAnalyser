@@ -3,6 +3,8 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 using StaticAnalysis.Analysis.Utils;
 
+using System.Linq;
+
 namespace StaticAnalysis.Analysis
 {
   /// <summary>
@@ -11,73 +13,30 @@ namespace StaticAnalysis.Analysis
   public abstract class TypeAnalysisRule : AnalysisRuleBase
   {
     /// <summary>
-    /// Syntax walker which only visits type statements.
+    /// Determines whether a given type declaration should be ignored for analysis purposes or not.
     /// </summary>
-    private class TypeStatementSyntaxWalker : TypedAnalysisSyntaxWalker<TypeAnalysisRule>
+    /// <param name="attributes">Set of attributes applied to the type.</param>
+    /// <returns></returns>
+    private bool IgnoreTypeDeclaration(SyntaxList<AttributeListSyntax> attributes,
+                                       AnalysisContext context,
+                                       SemanticModel model)
     {
-      public TypeStatementSyntaxWalker(TypeAnalysisRule rule, AnalysisContext context)
-        : base(rule, context)
-      { }
-
-      /// <summary>
-      /// Invokes the bound rule for a class declaration.
-      /// </summary>
-      /// <param name="node">The class to analyse.</param>
-      public override void VisitClassBlock(ClassBlockSyntax node)
-      {
-        VisitType(node);
-      }
-
-      /// <summary>
-      /// Invokes the bound rule for a structure declaration.
-      /// </summary>
-      /// <param name="node">The structure declaration to analyse.</param>
-      public override void VisitStructureBlock(StructureBlockSyntax node)
-      {
-        VisitType(node);
-      }
-
-      /// <summary>
-      /// Invokes the bound rule for an interface declaration.
-      /// </summary>
-      /// <param name="node">The interface declaration to analyse.</param>
-      public override void VisitInterfaceBlock(InterfaceBlockSyntax node)
-      {
-        VisitType(node);
-      }
-
-      /// <summary>
-      /// Optionally executes the rule on a class or structure declaration.
-      /// </summary>
-      /// <param name="node">The type to analyse.</param>
-      private void VisitType(TypeBlockSyntax node)
-      {
-        if (!IgnoreTypeDeclaration(node.Begin.AttributeLists))
-          Rule.AnalyseTypeDeclaration(node, Context, CurrentSemanticModel);
-
-        DefaultVisit(node);
-      }
-
-      /// <summary>
-      /// Determines whether a given type declaration should be ignored for analysis purposes or not.
-      /// </summary>
-      /// <param name="attributes">Set of attributes applied to the type.</param>
-      /// <returns></returns>
-      private bool IgnoreTypeDeclaration(SyntaxList<AttributeListSyntax> attributes)
-      {
-        return Context.Options.IgnoreGeneratedCode
-               ? AnalysisUtils.HasGeneratedCodeAttribute(attributes, CurrentSemanticModel)
-               : false;
-      }
+      return context.Options.IgnoreGeneratedCode
+             ? AnalysisUtils.HasGeneratedCodeAttribute(attributes, model)
+             : false;
     }
 
-    /// <summary>
-    /// Factory method to create a syntax walker specific to this type of rule
-    /// </summary>
-    /// <returns></returns>
-    protected override AnalysisSyntaxWalker CreateSyntaxWalker(AnalysisContext context)
+    protected override void AnalyseCompilationUnit(CompilationUnitSyntax compilationUnit,
+                                                   SemanticModel model,
+                                                   AnalysisContext context)
     {
-      return new TypeStatementSyntaxWalker(this, context);
+      var types = compilationUnit.DescendantNodes().OfType<TypeBlockSyntax>();
+
+      foreach (var type in types)
+      {
+        if(!IgnoreTypeDeclaration(type.Begin.AttributeLists, context, model))
+          AnalyseTypeDeclaration(type, context, model);
+      }
     }
 
     /// <summary>

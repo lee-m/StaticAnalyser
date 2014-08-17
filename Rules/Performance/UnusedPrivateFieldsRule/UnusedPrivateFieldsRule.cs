@@ -86,7 +86,7 @@ namespace StaticAnalysis.Rules.Performance
 
       //Make a pass over the identifiers referred to by this type to determine if they in turn
       //refer to a private field
-      var identifiers = typeDecl.DescendantNodes().OfType<IdentifierNameSyntax>().ToList();
+      var identifiers = typeDecl.DescendantNodes().OfType<IdentifierNameSyntax>();
 
       foreach (IdentifierNameSyntax identifier in identifiers)
       {
@@ -100,7 +100,9 @@ namespace StaticAnalysis.Rules.Performance
       }
     }
 
-    protected override AnalysisSyntaxWalker CreateSyntaxWalker(AnalysisContext context)
+    protected override void AnalyseCompilationUnit(CompilationUnitSyntax compilationUnit,
+                                                   SemanticModel model,
+                                                   AnalysisContext context)
     {
       throw new NotSupportedException();
     }

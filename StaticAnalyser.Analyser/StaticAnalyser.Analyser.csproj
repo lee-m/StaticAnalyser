@@ -86,7 +86,6 @@
   <ItemGroup>
     <Compile Include="Analysis\AnalysisResults.cs" />
     <Compile Include="Analysis\AnalysisRuleCollection.cs" />
-    <Compile Include="Analysis\AnalysisRuleSyntaxWalker.cs" />
     <Compile Include="Utils\AnalysisUtils.cs" />
     <Compile Include="Analysis\MethodAnalysisRule.cs" />
     <Compile Include="Analysis\TypeAnalysisRule.cs" />

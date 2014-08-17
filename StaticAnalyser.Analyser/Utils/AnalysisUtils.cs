@@ -9,6 +9,9 @@ namespace StaticAnalysis.Analysis.Utils
 {
   public static class AnalysisUtils
   {
+    private static string GeneratedCodeAttributeName = typeof(GeneratedCodeAttribute).Name;
+    private static string DllImportAttributeName = typeof(DllImportAttribute).Name;
+
     /// <summary>
     /// Determines if any attribute in a list of attributes applied to a symbol represents a generated
     /// code attibute.
@@ -17,7 +20,7 @@ namespace StaticAnalysis.Analysis.Utils
     /// <returns>True if the list of attributes contains the generated code attribute.</returns>
     public static bool HasGeneratedCodeAttribute(ImmutableArray<AttributeData> attributes)
     {
-      return attributes.Any(attr => attr.AttributeClass.ToString() == typeof(GeneratedCodeAttribute).FullName);
+      return attributes.Any(attr => attr.AttributeClass.Name == GeneratedCodeAttributeName);
     }
 
     /// <summary>
@@ -28,7 +31,7 @@ namespace StaticAnalysis.Analysis.Utils
     /// <returns>True if the type is compiler generated, false if it's not.</returns>
     public static bool HasGeneratedCodeAttribute(SyntaxList<AttributeListSyntax> attributes, SemanticModel model)
     {
-      return AttributeListContainsAttribute(attributes, model, typeof(GeneratedCodeAttribute).FullName);
+      return AttributeListContainsAttribute(attributes, model, GeneratedCodeAttributeName);
     }
 
     /// <summary>
@@ -39,7 +42,7 @@ namespace StaticAnalysis.Analysis.Utils
     /// <returns>True if the type is compiler generated, false if it's not.</returns>
     public static bool HasDllImportAttribte(SyntaxList<AttributeListSyntax> attributes, SemanticModel model)
     {
-      return AttributeListContainsAttribute(attributes, model, typeof(DllImportAttribute).FullName);
+      return AttributeListContainsAttribute(attributes, model, DllImportAttributeName);
     }
 
     /// <summary>
@@ -47,24 +50,40 @@ namespace StaticAnalysis.Analysis.Utils
     /// </summary>
     /// <param name="attributes">Atribute list to search.</param>
     /// <param name="model">Semantic model to use for looking up symbol info.</param>
-    /// <param name="searhAttribute">The attribute to look for.</param>
+    /// <param name="searchAttribute">The attribute to look for.</param>
     /// <returns></returns>
     private static bool AttributeListContainsAttribute(SyntaxList<AttributeListSyntax> attributes,
                                                        SemanticModel model,
-                                                       string searhAttribute)
+                                                       string searchAttribute)
     {
-      foreach (AttributeSyntax attr in attributes.SelectMany(attrList => attrList.Attributes))
+      for(int i = 0; i < attributes.Count; i++)
       {
-        //The symbol lookup returns the constructor of the attribute being applied so need to look
-        //at the containing symbol to find the actual attribute class
-        var symbol = model.GetSymbolInfo(attr.Name);
+        var attrs = attributes[i];
 
-        if (symbol.Symbol != null
-           && symbol.Symbol.ContainingSymbol.ToString() == searhAttribute)
-          return true;
+        for(int j = 0; j < attrs.Attributes.Count; j++)
+        {
+          var symbol = model.GetSymbolInfo(attrs.Attributes[j].Name);
+
+          if (symbol.Symbol != null
+             && symbol.Symbol.ContainingSymbol.Name == searchAttribute)
+            return true;
+        }
+
       }
 
       return false;
+      //foreach (AttributeSyntax attr in attributes.SelectMany(attrList => attrList.Attributes))
+      //{
+      //  //The symbol lookup returns the constructor of the attribute being applied so need to look
+      //  //at the containing symbol to find the actual attribute class
+      //  var symbol = model.GetSymbolInfo(attr.Name);
+
+      //  if (symbol.Symbol != null
+      //     && symbol.Symbol.ContainingSymbol.Name == searchAttribute)
+      //    return true;
+      //}
+
+      //return false;
     }
   }
 }
