@@ -27,15 +27,15 @@ TestApp/TestApp/bin/*
 TestApp/TestApp/obj/*
 TestResults/*
 TestApp/*
-Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/bin/Debug/*
-Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/obj/Debug/*
+Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/bin/*
+Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/obj/*
 Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/bin/*
 Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/obj/*
 Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/bin/*
 Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/obj/*
 Unit Tests/Design/UnitTests.Design.AbstractTypeWithPublicCtor/bin/*
 Unit Tests/Design/UnitTests.Design.AbstractTypeWithPublicCtor/obj/*
-Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/bin/Debug/*
+Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/bin/*
 Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/obj/*
 Rules/Design/EmptyInterface/bin/*
 Rules/Design/EmptyInterface/obj/*
