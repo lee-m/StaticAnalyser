@@ -13,12 +13,20 @@ Rules/Correctness/EmptyCatchBlockRule/bin/*
 Rules/Correctness/EmptyCatchBlockRule/obj/*
 Rules/Design/AbstractTypeWithPublicCtor/bin/*
 Rules/Design/AbstractTypeWithPublicCtor/obj/*
+Rules/Design/EmptyInterface/bin/*
+Rules/Design/EmptyInterface/obj/*
+Rules/Design/TooManyTypeParameters/bin/*
+Rules/Design/TooManyTypeParameters/obj/*
 Rules/Performance/EmptyFinaliserRule/bin/*
 Rules/Performance/EmptyFinaliserRule/obj/*
+Rules/Performance/UncalledPrivateCode/bin/*
+Rules/Performance/UncalledPrivateCode/obj/*
 Rules/Performance/UnusedParametersRule/bin/*
 Rules/Performance/UnusedParametersRule/obj/*
 Rules/Performance/UnusedPrivateFieldsRule/bin/*
 Rules/Performance/UnusedPrivateFieldsRule/obj/*
+Rules/Performance/UnsealedAttribute/bin/*
+Rules/Performance/UnsealedAttribute/obj/*
 StaticAnalyser/bin/*
 StaticAnalyser/obj/*
 StaticAnalyser.Analyser/bin/*
@@ -27,6 +35,7 @@ TestApp/TestApp/bin/*
 TestApp/TestApp/obj/*
 TestResults/*
 TestApp/*
+Gendarme/*
 Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/bin/*
 Unit Tests/BadPractice/UnitTests.BadPractice.AvoidVisibleConstants/obj/*
 Unit Tests/BadPractice/UnitTests.BadPractice.VB6ReturnRule/bin/*
@@ -35,18 +44,13 @@ Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/
 Unit Tests/BadPractice/UnitTests.BadPractice.OverridableMethodCallInConstructor/obj/*
 Unit Tests/Design/UnitTests.Design.AbstractTypeWithPublicCtor/bin/*
 Unit Tests/Design/UnitTests.Design.AbstractTypeWithPublicCtor/obj/*
-Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/bin/*
-Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/obj/*
-Rules/Design/EmptyInterface/bin/*
-Rules/Design/EmptyInterface/obj/*
 Unit Tests/Design/UnitTests.Design.EmptyInterface/bin/*
 Unit Tests/Design/UnitTests.Design.EmptyInterface/obj/*
-Rules/Design/TooManyTypeParameters/bin/*
-Rules/Design/TooManyTypeParameters/obj/*
 Unit Tests/Design/UnitTests.Design.TooManyTypeParameters/bin/*
 Unit Tests/Design/UnitTests.Design.TooManyTypeParameters/obj/*
-Gendarme/*
-Rules/Performance/UnsealedAttribute/bin/*
-Rules/Performance/UnsealedAttribute/obj/*
+Unit Tests/Performance/UnitTests.Performance.UncalledPrivateCode/bin/*
+Unit Tests/Performance/UnitTests.Performance.UncalledPrivateCode/obj/*
+Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/bin/*
+Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/obj/*
 UnitTests.Performance.UnsealedAttribute/bin/*
 UnitTests.Performance.UnsealedAttribute/obj/*
