@@ -73,18 +73,6 @@ namespace StaticAnalysis.Analysis.Utils
       }
 
       return false;
-      //foreach (AttributeSyntax attr in attributes.SelectMany(attrList => attrList.Attributes))
-      //{
-      //  //The symbol lookup returns the constructor of the attribute being applied so need to look
-      //  //at the containing symbol to find the actual attribute class
-      //  var symbol = model.GetSymbolInfo(attr.Name);
-
-      //  if (symbol.Symbol != null
-      //     && symbol.Symbol.ContainingSymbol.Name == searchAttribute)
-      //    return true;
-      //}
-
-      //return false;
     }
   }
 }
