@@ -43,7 +43,7 @@ namespace StaticAnalysis.Rules.Performance
           if (!fieldDets.ContainsKey(typeSymbol))
             fieldDets.Add(typeSymbol, new Dictionary<IFieldSymbol, bool>());
 
-          AnalyseTypeDeclaration(typeDecl, typeSymbol, context, model, fieldDets[typeSymbol]);
+          await Task.Run(() => AnalyseTypeDeclaration(typeDecl, typeSymbol, context, model, fieldDets[typeSymbol]));
         }
       }
 
@@ -100,9 +100,9 @@ namespace StaticAnalysis.Rules.Performance
       }
     }
 
-    protected override void AnalyseCompilationUnit(CompilationUnitSyntax compilationUnit,
-                                                   SemanticModel model,
-                                                   AnalysisContext context)
+    protected override Task AnalyseCompilationUnitAsync(CompilationUnitSyntax compilationUnit,
+                                                        SemanticModel model,
+                                                        AnalysisContext context)
     {
       throw new NotSupportedException();
     }

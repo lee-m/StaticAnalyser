@@ -19,12 +19,12 @@ namespace StaticAnalysis.Analysis
       foreach (var tree in context.CurrentCompilation.SyntaxTrees)
       {
         SemanticModel model = context.CurrentCompilation.GetSemanticModel(tree);
-        AnalyseCompilationUnit((CompilationUnitSyntax)await tree.GetRootAsync(), model, context);
+        await AnalyseCompilationUnitAsync((CompilationUnitSyntax)await tree.GetRootAsync(), model, context);
       }
     }
 
-    protected abstract void AnalyseCompilationUnit(CompilationUnitSyntax compilationUnit, 
-                                                   SemanticModel model,
-                                                   AnalysisContext context);
+    protected abstract Task AnalyseCompilationUnitAsync(CompilationUnitSyntax compilationUnit, 
+                                                        SemanticModel model,
+                                                        AnalysisContext context);
   }
 }
