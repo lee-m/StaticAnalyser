@@ -88,6 +88,10 @@
       <Project>{5084eeb8-e7f5-4e2f-996f-f3ea5a5feb0f}</Project>
       <Name>StaticAnalyser.Analyser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\UnitTests.Utils\UnitTests.Utils.csproj">
+      <Project>{442a4602-579c-4c88-82cb-559123b812cc}</Project>
+      <Name>UnitTests.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

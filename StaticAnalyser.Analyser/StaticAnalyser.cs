@@ -37,21 +37,22 @@ namespace StaticAnalysis
       MSBuildWorkspace workspace = MSBuildWorkspace.Create();
       Solution solution = await workspace.OpenSolutionAsync(options.SolutionFile);
 
-      await Task.WhenAll(solution.Projects.Select(proj => AnalyseProjectAsync(proj, results, options)));
+      await Task.WhenAll(solution.Projects.Select(proj => AnalyseProjectAsync(solution, proj, results, options)));
       return results;
     }
 
     /// <summary>
     /// Asynchronously analyses a single project.
     /// </summary>
+    /// <param name="solution">The solution loaded.</param>
     /// <param name="project">The project to analyse.</param>
     /// <param name="results">Holds the set of analysis warnings produced.</param>
     /// <param name="options">Analysis options.</param>
     /// <returns></returns>
-    private async Task AnalyseProjectAsync(Project project, AnalysisResults results, AnalysisOptions options)
+    private async Task AnalyseProjectAsync(Solution solution, Project project, AnalysisResults results, AnalysisOptions options)
     {
       VisualBasicCompilation compilation = (VisualBasicCompilation)await project.GetCompilationAsync();
-      await mRules.ExecuteRulesAsync(new AnalysisContext(options, results, compilation));
+      await mRules.ExecuteRulesAsync(new AnalysisContext(options, results, compilation, solution, project));
     }
   }
 }

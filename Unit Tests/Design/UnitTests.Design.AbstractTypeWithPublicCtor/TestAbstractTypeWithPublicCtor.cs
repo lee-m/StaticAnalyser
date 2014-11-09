@@ -1,15 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using StaticAnalysis;
 using StaticAnalysis.Analysis;
 using StaticAnalysis.Rules.Design;
 
-using System;
-using System.CodeDom.Compiler;
 using System.Linq;
+
+using UnitTests.Utils;
 
 namespace StaticAnalyser.UnitTests.Design
 {
@@ -19,20 +16,16 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod]
     public void TestAbstractTypeWithPublicCtorRuleProducesExpectedWarnings()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public MustInherit Class Foo
 
           Public Sub New()
           End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -44,24 +37,17 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod()]
     public void TestAbstractTypeWithPublicCtorRuleIgnoresGeneratedCodeWhenIGCOptionSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
         Public MustInherit Class Foo
 
           Public Sub New()
           End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true },
-                                                    new AnalysisResults(),
-                                                    comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = true };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -72,24 +58,17 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod()]
     public void TestAbstractTypeWithPublicCtorRuleDoesNoIgnoresGeneratedCodeWhenIGCOptionNotSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
         Public MustInherit Class Foo
 
           Public Sub New()
           End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false },
-                                                    new AnalysisResults(),
-                                                    comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = false };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -101,7 +80,7 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod]
     public void TestAbstractTypeWithPublicCtorRuleOnlyWarnsOnceWhenMultiplePublicCtorsExist()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public MustInherit Class Foo
 
           Public Sub New()
@@ -110,14 +89,10 @@ namespace StaticAnalyser.UnitTests.Design
           Public Sub New(param As String)
           End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -129,20 +104,16 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod]
     public void TestAbstractTypeWithPublicCtorRuleDoesNotWarnForPrivateCtor()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public MustInherit Class Foo
 
           Private Sub New()
           End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -153,20 +124,16 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod]
     public void TestAbstractTypeWithPublicCtorRuleDoesNotWarnForProtectedCtor()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public MustInherit Class Foo
 
           Protected Sub New()
           End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -177,20 +144,16 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod]
     public void TestAbstractTypeWithPublicCtorRuleDoesNotWarnForNonAbstractTypes()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Foo
 
           Public Sub New()
           End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -201,16 +164,12 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod]
     public void TestAbstractTypeWithPublicCtorRuleDoesNotWarnForAbstractTypeWithNoCtors()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public MustInherit Class Foo
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       AbstractTypeWithPublicCtor rule = new AbstractTypeWithPublicCtor();
       rule.ExecuteRuleAsync(context).Wait();
 

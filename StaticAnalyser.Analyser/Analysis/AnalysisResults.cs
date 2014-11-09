@@ -41,7 +41,7 @@ namespace StaticAnalysis.Analysis
         mResults.Add(new AnalysisMessage()
           {
             Message = string.Format(message, messageArgs),
-            SourceFile = location.FilePath,
+            SourceFile = location.SourceTree.FilePath,
             LineNumber = location.GetLineSpan().StartLinePosition.Line + 1,
           });
       }

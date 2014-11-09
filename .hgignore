@@ -54,3 +54,5 @@ Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/bin/*
 Unit Tests/Performance/UnitTests.Performance.UnusedParametersRule/obj/*
 UnitTests.Performance.UnsealedAttribute/bin/*
 UnitTests.Performance.UnsealedAttribute/obj/*
+UnitTests.Utils/bin/*
+UnitTests.Utils/obj/*

@@ -23,6 +23,16 @@ namespace StaticAnalysis.Analysis
     private readonly Compilation mCompilation;
 
     /// <summary>
+    /// The current solution loaded.
+    /// </summary>
+    private readonly Solution mSolution;
+
+    /// <summary>
+    /// The project being analysed.
+    /// </summary>
+    private readonly Project mProject;
+
+    /// <summary>
     /// Initialise a new context instance.
     /// </summary>
     /// <param name="options">Parsed command line options for the program.</param>
@@ -30,11 +40,15 @@ namespace StaticAnalysis.Analysis
     /// <param name="compilation">The current compilation instance.</param>
     public AnalysisContext(AnalysisOptions options,
                            AnalysisResults results,
-                           Compilation compilation)
+                           Compilation compilation,
+                           Solution solution,
+                           Project project)
     {
       mOptions = options;
       mResults = results;
       mCompilation = compilation;
+      mSolution = solution;
+      mProject = project;
     }
 
     /// <summary>
@@ -59,6 +73,22 @@ namespace StaticAnalysis.Analysis
     public Compilation CurrentCompilation
     {
       get { return mCompilation; }
+    }
+
+    /// <summary>
+    /// Accessor for the solution
+    /// </summary>
+    public Solution Solution
+    {
+      get { return mSolution; }
+    }
+
+    /// <summary>
+    /// Accessor for the project being analysed.
+    /// </summary>
+    public Project Project
+    {
+      get { return mProject; }
     }
   }
 }

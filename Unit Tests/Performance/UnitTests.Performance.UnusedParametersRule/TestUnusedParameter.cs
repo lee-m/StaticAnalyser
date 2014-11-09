@@ -1,15 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using StaticAnalysis;
 using StaticAnalysis.Analysis;
 using StaticAnalysis.Rules.Performance;
 
-using System;
-using System.CodeDom.Compiler;
 using System.Linq;
+
+using UnitTests.Utils;
 
 namespace StaticAnalyser.UnitTests.Performance
 {
@@ -19,7 +16,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnusedParametersRuleDoesNotWarnForEventParameters()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Imports System
 
         Public Class Class1
@@ -45,14 +42,10 @@ namespace StaticAnalyser.UnitTests.Performance
 
             End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -63,21 +56,17 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod()]
     public void TestUnusedParametersProducesExpectedWarnings()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           Public Sub Test(usedParam As String, unusedParam As String)
               Dim x = usedParam
           End Sub
 
-      End Class", "TestFile.vb");
+      End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -89,7 +78,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod()]
     public void TestUnusedParametersIgnoresGeneratedCodeWhenIGCSetToTrue()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
@@ -97,15 +86,10 @@ namespace StaticAnalyser.UnitTests.Performance
               Dim x = usedParam
           End Sub
 
-      End Class", "TestFile.vb");
+      End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = true };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -116,7 +100,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod()]
     public void TestUnusedParametersDoesNotIgnoresGeneratedCodeWhenIGCSetToFalse()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
@@ -124,15 +108,10 @@ namespace StaticAnalyser.UnitTests.Performance
               Dim x = usedParam
           End Sub
 
-      End Class", "TestFile.vb");
+      End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = false };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -144,7 +123,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod()]
     public void TestUnusedParametersIgnoresPartialMethods()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Partial Public Class Class1
 
             Partial Private Sub Test(usedInPartial1 As String, unusedParam As String)
@@ -158,15 +137,10 @@ namespace StaticAnalyser.UnitTests.Performance
                 usedInPartial1 = String.Empty
             End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -178,20 +152,15 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod()]
     public void TestUnusedParametersIgnoresAbstractMethods()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public MustInherit Class Class1
 
             Public MustOverride Sub Test(paramOne As String)
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -202,22 +171,17 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnusedParametersIgnoresPInvokeMethods()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
             <System.Runtime.InteropServices.DllImport(""winmm.dll"")> _
             Public Shared Function waveOutGetVolume(ByVal hwo As IntPtr, ByRef dwVolume As System.UInt32) As Integer
             End Function
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -228,7 +192,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnusedParametersIgnoresOverridableAndOverridesMethods()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Foo
 
             Public Overridable Sub SomeMethod(paramOne As String)
@@ -242,15 +206,10 @@ namespace StaticAnalyser.UnitTests.Performance
             Public Overrides Sub SomeMethod(paramOne As String)
             End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -261,18 +220,13 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnusedParametersIgnoresInterfaceMethods()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Interface IFoo
             Sub SomeFunc(paramOne As String, paramTwo As String)
-        End Interface", "TestFile.vb");
+        End Interface";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -283,7 +237,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnusedParametersRuleDoesNotWarnForEventHandlersAddedViaAddHandler()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Imports System
 
         Public Class Class1
@@ -314,14 +268,10 @@ namespace StaticAnalyser.UnitTests.Performance
 
             End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -332,7 +282,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnusedParametersRuleIgnoresAddHandlerWithNoAddressOf()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Imports System
 
         Public Class Class1
@@ -348,14 +298,10 @@ namespace StaticAnalyser.UnitTests.Performance
                 AddHandler SomeOtherEvent, handler
             End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnusedParametersRule rule = new UnusedParametersRule();
       rule.ExecuteRuleAsync(context).Wait();
 

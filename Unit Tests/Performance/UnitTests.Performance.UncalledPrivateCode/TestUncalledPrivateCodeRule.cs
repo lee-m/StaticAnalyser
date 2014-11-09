@@ -1,16 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
-using Microsoft.CodeAnalysis.VisualBasic;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using StaticAnalysis;
 using StaticAnalysis.Analysis;
 using StaticAnalysis.Rules.Performance;
 
-using System;
-using System.CodeDom.Compiler;
 using System.Linq;
+
+using UnitTests.Utils;
 
 namespace StaticAnalyser.UnitTests.Performance
 {
@@ -20,7 +16,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleWarnsForUncalledPrivateMethod()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText =
       @"Public Class Class1
 
           Private Sub UncalledSub()
@@ -30,14 +26,10 @@ namespace StaticAnalyser.UnitTests.Performance
               Return 0
           End Function
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -48,7 +40,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleDoesNotWarnForGeneratedUncalledPrivateMethodWhenIGCSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
@@ -60,15 +52,10 @@ namespace StaticAnalyser.UnitTests.Performance
               Return 0
           End Function
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = true };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -79,7 +66,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleWarnsForGeneratedUncalledPrivateMethodWhenIGCNotSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
@@ -91,15 +78,10 @@ namespace StaticAnalyser.UnitTests.Performance
               Return 0
           End Function
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = false };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -110,7 +92,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleWarnsForUncalledPrivateProperty()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           Private Property PrivateProperty As Integer
@@ -121,14 +103,10 @@ namespace StaticAnalyser.UnitTests.Performance
               End Get
           End Property
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -139,7 +117,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleDoesNotWarnForUncalledGeneratedPrivatePropertyWhenIGCSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
@@ -152,15 +130,10 @@ namespace StaticAnalyser.UnitTests.Performance
               End Get
           End Property
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = true };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -171,7 +144,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleWarnsForUncalledGeneratedPrivatePropertyWhenIGCNotSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
@@ -184,15 +157,10 @@ namespace StaticAnalyser.UnitTests.Performance
               End Get
           End Property
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = false };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -203,7 +171,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleDoesNotWarnForCalledPrivateMethod()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           Public Sub New()
@@ -234,14 +202,10 @@ namespace StaticAnalyser.UnitTests.Performance
             Return False
           End Function
 
-        End Class", "Test.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -252,7 +216,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleDoesNotWarnForCalledPrivateProperty()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           Public Sub New()
@@ -268,14 +232,10 @@ namespace StaticAnalyser.UnitTests.Performance
               End Get
           End Property
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -286,7 +246,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleDoesNotWarnForUncalledProtectedMethod()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           Protected Sub UncalledSub()
@@ -303,14 +263,10 @@ namespace StaticAnalyser.UnitTests.Performance
               Return 0
           End Function
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -321,7 +277,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleDoesNotWarnForUncalledProtectedProperty()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           Protected Property ProtectedProperty As Integer
@@ -332,14 +288,10 @@ namespace StaticAnalyser.UnitTests.Performance
               End Get
           End Property
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -350,7 +302,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleDoesNotWarnForUncalledPublicMethod()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           Public Sub PublicSub()
@@ -360,14 +312,10 @@ namespace StaticAnalyser.UnitTests.Performance
               Return 0
           End Function
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -378,7 +326,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleDoesNotWarnForUncalledPublicProperty()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class Class1
 
           Public Property PublicProperty As Integer
@@ -389,14 +337,10 @@ namespace StaticAnalyser.UnitTests.Performance
               End Get
           End Property
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -407,7 +351,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUncalledPrivateCodeRuleRuleDoesNotWarnForUncalledPrivateMethodPassedToAddHandler()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText =
       @"Public Class Class1
 
           Public Event AnEvent()
@@ -429,14 +373,10 @@ namespace StaticAnalyser.UnitTests.Performance
             
           End Sub          
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UncalledPrivateCodeRule rule = new UncalledPrivateCodeRule();
       rule.ExecuteRuleAsync(context).Wait();
 

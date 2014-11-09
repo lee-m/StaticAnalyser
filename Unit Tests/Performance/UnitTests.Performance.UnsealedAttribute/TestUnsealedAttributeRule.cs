@@ -1,15 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using StaticAnalysis;
 using StaticAnalysis.Analysis;
 using StaticAnalysis.Rules.Performance;
 
-using System;
-using System.CodeDom.Compiler;
 using System.Linq;
+
+using UnitTests.Utils;
 
 namespace StaticAnalyser.UnitTests.Performance
 {
@@ -19,7 +16,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnsealedAttributeRuleProducesExpectedWarnings()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class SomeAttribute
             Inherits System.Attribute
 
@@ -32,15 +29,10 @@ namespace StaticAnalyser.UnitTests.Performance
                 MyBase.New("")
             End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(System.ComponentModel.DescriptionAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnsealedAttributeRule rule = new UnsealedAttributeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -53,20 +45,15 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnsealedAttributeRuleIgnoresGeneratedCodeWhenIGOptionSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
         Public Class SomeAttribute
             Inherits System.Attribute
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = true };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnsealedAttributeRule rule = new UnsealedAttributeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -77,20 +64,15 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnsealedAttributeRuleDoesNotIgnoresGeneratedCodeWhenIGOptionNotSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
         Public Class SomeAttribute
             Inherits System.Attribute
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = false };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnsealedAttributeRule rule = new UnsealedAttributeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -102,19 +84,14 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnsealedAttributeRuleDoesNotWarnTypesNotInheritedFromAttribute()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class SomeType
             Inherits System.Exception
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnsealedAttributeRule rule = new UnsealedAttributeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -125,7 +102,7 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnsealedAttributeRuleDoesNotWarnForSealedAttributes()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public NotInheritable Class SomeAttribute
             Inherits System.Attribute
 
@@ -138,15 +115,10 @@ namespace StaticAnalyser.UnitTests.Performance
                 MyBase.New("")
             End Sub
 
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnsealedAttributeRule rule = new UnsealedAttributeRule();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -157,17 +129,12 @@ namespace StaticAnalyser.UnitTests.Performance
     [TestMethod]
     public void TestUnsealedAttributeRuleDoesNotWarnForTypesWithNoBaseType()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Class SomeType
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true }, new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       UnsealedAttributeRule rule = new UnsealedAttributeRule();
       rule.ExecuteRuleAsync(context).Wait();
 

@@ -1,15 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using StaticAnalysis;
 using StaticAnalysis.Analysis;
 using StaticAnalysis.Rules.Design;
 
-using System;
-using System.CodeDom.Compiler;
 using System.Linq;
+
+using UnitTests.Utils;
 
 namespace StaticAnalyser.UnitTests.Design
 {
@@ -19,19 +16,15 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod]
     public void TestTooManyTypeParametersRuleProducesExpectedWarnings()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"Public Interface IFoo(Of T, K, V)
         End Interface
 
         Public Class Foo(Of T, K, V)
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions(), new AnalysisResults(), comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       TooManyTypeParameters rule = new TooManyTypeParameters();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -44,24 +37,17 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod()]
     public void TestTooManyTypeParametersIgnoresGeneratedCodeWhenIGCOptionSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
         Public Interface IFoo(Of T, K, V)
         End Interface
 
         <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
         Public Class Foo(Of T, K, V)
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = true },
-                                                    new AnalysisResults(),
-                                                    comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = true };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       TooManyTypeParameters rule = new TooManyTypeParameters();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -72,24 +58,17 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod()]
     public void TestTooManyTypeParametersDoesNotIgnoresGeneratedCodeWhenIGCOptionNotSet()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText = 
       @"<System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
         Public Interface IFoo(Of T, K, V)
         End Interface
 
         <System.CodeDom.Compiler.GeneratedCode(""Tool"", ""1.0.0.0"")>
         Public Class Foo(Of T, K, V)
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false },
-                                                    new AnalysisResults(),
-                                                    comp);
-
+      AnalysisOptions options = new AnalysisOptions() { IgnoreGeneratedCode = false };
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       TooManyTypeParameters rule = new TooManyTypeParameters();
       rule.ExecuteRuleAsync(context).Wait();
 
@@ -102,7 +81,7 @@ namespace StaticAnalyser.UnitTests.Design
     [TestMethod()]
     public void TestTooManyTypeParametersDoesNotWarnForOneOrTwoTypeParams()
     {
-      SyntaxTree syntaxTree = VisualBasicSyntaxTree.ParseText(
+      string sourceText =
       @"Public Interface IFoo(Of T)
         End Interface
 
@@ -113,17 +92,10 @@ namespace StaticAnalyser.UnitTests.Design
         End Class
 
         Public Class Bar(Of T, K)
-        End Class", "TestFile.vb");
+        End Class";
 
-      Compilation comp = VisualBasicCompilation.Create("Test")
-                         .AddReferences(new MetadataFileReference(typeof(Object).Assembly.Location))
-                         .AddReferences(new MetadataFileReference(typeof(GeneratedCodeAttribute).Assembly.Location))
-                         .AddSyntaxTrees(syntaxTree);
-      SemanticModel model = comp.GetSemanticModel(syntaxTree);
-      AnalysisContext context = new AnalysisContext(new AnalysisOptions() { IgnoreGeneratedCode = false },
-                                                    new AnalysisResults(),
-                                                    comp);
-
+      AnalysisOptions options = new AnalysisOptions();
+      AnalysisContext context = UnitTestUtils.CreateAnalysisContext(sourceText, options);
       TooManyTypeParameters rule = new TooManyTypeParameters();
       rule.ExecuteRuleAsync(context).Wait();
 
