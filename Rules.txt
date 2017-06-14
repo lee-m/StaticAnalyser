@@ -1,0 +1,60 @@
+- undisposed locals
+- uncalled private methods
+- suggest auto-imp property
+- exception xml docs?
+- not checking return type of FirstOrDefault()?
+- redundant casts
+- protected methods not called by base class
+
+Gendarme.BadPractice (http://www.mono-project.com/Gendarme.Rules.BadPractice)
+ - AvoidCallingProblematicMethodsRule
+ - DoNotForgetNotImplementedMethodsRule
+ - OnlyUseDisposeForIDisposableTypesRule
+ - ToStringShouldNotReturnNullRule
+ 
+Gendarme.Concurrency (http://www.mono-project.com/Gendarme.Rules.Concurrency)
+ - DoNotLockOnThisOrTypesRule
+ 
+Gendarme.Correctness (http://www.mono-project.com/Gendarme.Rules.Concurrency)
+ - DisposableFieldsShouldBeDisposedRule
+ - EnsureLocalDisposalRule
+ - UseValueInPropertySetterRule
+ - ReviewSelfAssignmentRule
+ 
+Gendarme.Design (http://www.mono-project.com/Gendarme.Rules.Design)
+ - AvoidPropertiesWithoutGetAccessorRule
+ - AvoidRefAndOutParametersRule
+ - AvoidVisibleNestedTypesRule
+ - ConsiderConvertingMethodToPropertyRule
+ - ConsiderUsingStaticTypeRule
+ - DeclareEventHandlersCorrectlyRule
+ - DoNotDeclareProtectedMembersInSealedTypeRule
+ - EnumsShouldDefineAZeroValueRule
+ - FlagsShouldNotDefineAZeroValueRule
+ - ImplementEqualsAndGetHashCodeInPairRule
+ - ImplementICloneableCorrectlyRule
+ - MissingAttributeUsageOnCustomAttributeRule
+ - TypesWithDisposableFieldsShouldBeDisposableRule
+ - UseCorrectDisposeSignaturesRule
+ 
+Gendarme.Exceptions (http://www.mono-project.com/Gendarme.Rules.Exceptions)
+ - AvoidArgumentExceptionDefaultConstructorRule
+ - AvoidThrowingBasicExceptionsRule
+ - DoNotDestroyStackTraceRule
+ - DoNotThrowReservedExceptionRule
+
+Gendarme.Naming (http://www.mono-project.com/Gendarme.Rules.Naming)
+ - UseCorrectPrefixRule
+ - UseCorrectSuffixRule
+ 
+Gendarme.Performance (http://www.mono-project.com/Gendarme.Rules.Performance)
+ - AvoidUncalledPrivateCodeRule
+ - AvoidUninstantiatedInternalClassesRule
+ - AvoidUnsealedConcreteAttributesRule
+ - AvoidLargeNumberOfLocalVariablesRule
+ - AvoidTypeGetTypeForConstantStringsRule
+ - AvoidLargeStructureRule
+ - AvoidUnneededFieldInitializationRule
+ - AvoidUnecessaryOverrides
+ 
+FxCop recommended rules
